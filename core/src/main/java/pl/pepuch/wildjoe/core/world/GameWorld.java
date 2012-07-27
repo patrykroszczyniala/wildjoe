@@ -32,6 +32,7 @@ public class GameWorld {
 	
 	public PointCounter pointCounter;
 	public Background background;
+	private float worldWidth;
 	
 	public GameWorld() {
 		gameBodyList = new ArrayList<DynamicActor>();
@@ -61,7 +62,7 @@ public class GameWorld {
 		}
 		
 		// paint blocks
-		for (Iterator iterator = gameBodyList.iterator(); iterator.hasNext();) {
+		for (Iterator<DynamicActor> iterator = gameBodyList.iterator(); iterator.hasNext();) {
 			DynamicActor body = (DynamicActor)iterator.next();
 		    body.paint(alpha);
 		}
@@ -141,6 +142,18 @@ public class GameWorld {
 	
 	public float getWorldHeight() {
 		return getScreenHeight();
+	}
+	
+	public float getWorldWidth() {
+		if (worldWidth==0.0f) {
+			for (Iterator<DynamicActor> iterator = gameBodyList.iterator(); iterator.hasNext();) {
+				DynamicActor body = (DynamicActor)iterator.next();
+				if (worldWidth < body.getModel().getPosition().x)
+					worldWidth = body.getModel().getPosition().x;
+			}
+			worldWidth++; //zwiekszam szerokosc o 1, tzn o szerokosc jednego klocka
+		}
+		return worldWidth;
 	}
 
 }

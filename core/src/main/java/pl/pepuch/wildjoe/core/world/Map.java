@@ -2,11 +2,12 @@ package pl.pepuch.wildjoe.core.world;
 
 import org.jbox2d.common.Vec2;
 
-import pl.pepuch.wildjoe.controller.DynamicActor;
 import pl.pepuch.wildjoe.controller.Background;
 import pl.pepuch.wildjoe.controller.Block;
 import pl.pepuch.wildjoe.controller.Coin;
+import pl.pepuch.wildjoe.controller.DynamicActor;
 import pl.pepuch.wildjoe.controller.Player;
+import pl.pepuch.wildjoe.controller.Wall;
 import playn.core.AssetWatcher;
 import playn.core.Json;
 import playn.core.PlayN;
@@ -52,7 +53,7 @@ public class Map {
 					String type = jsonEntity.getString("type");
 					float x = jsonEntity.getNumber("x");
 					float y = jsonEntity.getNumber("y");
-					float a = jsonEntity.getNumber("a");
+
 					DynamicActor block = null;
 					if (type.equalsIgnoreCase(Map.BLOCK_NORMAL)) {
 						block = new Block(gameWorld.world, new Vec2(x, y));
@@ -71,8 +72,16 @@ public class Map {
 				gameWorld.background = new Background(gameWorld.world, new Vec2(0.0f, 0.0f)); 
 				PlayN.graphics().rootLayer().add(gameWorld.background.getView().getLayer());
 				// left and right wall
-//				gameWorld.add(new WallBlock(0.001f, PlayN.graphics().height()*GameWorld.physUnitPerScreenUnit(), new Vec2(0.0f, 0.0f)));
-//				gameWorld.add(new WallBlock(0.001f, PlayN.graphics().height()*GameWorld.physUnitPerScreenUnit(), new Vec2(gameWorld.getWorldWidth(), 0.0f)));
+				gameWorld.add(new Wall(gameWorld.world, new Vec2(0.0f, 0.0f)));
+				gameWorld.add(new Wall(gameWorld.world, new Vec2(gameWorld.getWorldWidth(), 0.0f)));
+				// add blocks before start wall
+				for (int i=1; i<10; i++) {
+					gameWorld.add(new Block(gameWorld.world, new Vec2(i*(-1), gameWorld.getWorldHeight()-1)));
+				}
+				// add blocks after end wall
+				for (int i=0; i<10; i++) {
+					gameWorld.add(new Block(gameWorld.world, new Vec2(gameWorld.getWorldWidth()+i, gameWorld.getWorldHeight()-1)));
+				}
 			
 				assetWatcher.start();
 			}

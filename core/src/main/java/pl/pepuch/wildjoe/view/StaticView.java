@@ -1,7 +1,6 @@
 package pl.pepuch.wildjoe.view;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pl.pepuch.wildjoe.model.DynamicModel;
 import pl.pepuch.wildjoe.model.StaticModel;

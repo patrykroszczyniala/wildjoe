@@ -2,13 +2,9 @@ package pl.pepuch.wildjoe.view;
 
 import static playn.core.PlayN.assets;
 import static playn.core.PlayN.graphics;
-
-import java.util.Iterator;
-
 import pl.pepuch.wildjoe.model.BackgroundModel;
 import playn.core.GroupLayer;
 import playn.core.Image;
-import playn.core.ImageLayer;
 import playn.core.Layer;
 import playn.core.PlayN;
 

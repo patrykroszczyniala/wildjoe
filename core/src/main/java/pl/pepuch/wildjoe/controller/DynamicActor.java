@@ -1,7 +1,6 @@
 package pl.pepuch.wildjoe.controller;
 
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.World;
 
 import pl.pepuch.wildjoe.model.DynamicModel;
 import pl.pepuch.wildjoe.view.DynamicView;

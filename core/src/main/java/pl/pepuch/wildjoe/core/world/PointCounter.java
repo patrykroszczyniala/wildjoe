@@ -3,7 +3,6 @@ package pl.pepuch.wildjoe.core.world;
 import playn.core.Image;
 import playn.core.Layer;
 import playn.core.PlayN;
-import tripleplay.ui.Group;
 import tripleplay.ui.Interface;
 import tripleplay.ui.Label;
 import tripleplay.ui.Root;
