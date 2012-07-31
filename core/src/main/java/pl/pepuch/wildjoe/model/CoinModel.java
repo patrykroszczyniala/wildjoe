@@ -6,21 +6,22 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+
+import pl.pepuch.wildjoe.core.world.GameWorld;
 
 public class CoinModel extends DynamicModel {
 	
-	public CoinModel(World world) {
-		super(world);
+	public CoinModel(GameWorld world, Vec2 position) {
+		super(world, position);
 	}
 	
 	@Override
-	protected Body createBody(World world) {
+	protected Body createBody(GameWorld world) {
 		width = 1.0f;
 		height = 1.0f;
 		
 		bodyDef = new BodyDef();
-	    bodyDef.type = BodyType.STATIC;
+	    bodyDef.type = BodyType.KINEMATIC;
 	    PolygonShape shape = new PolygonShape();
 	    Vec2[] polygon = new Vec2[4];
 	    polygon[0] = new Vec2(0, 0);
@@ -33,7 +34,7 @@ public class CoinModel extends DynamicModel {
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.2f;
 		
-		body = world.createBody(bodyDef);
+		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
 		body.setUserData(this);
 		

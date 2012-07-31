@@ -4,7 +4,8 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+
+import pl.pepuch.wildjoe.core.world.GameWorld;
 
 public abstract class DynamicModel {
 	
@@ -13,17 +14,45 @@ public abstract class DynamicModel {
 	protected Body body;
 	protected float height;
 	protected float width;
+	protected GameWorld world;
+	protected final Vec2 origin;
+	protected float speed;
 	
-	public DynamicModel(World world) {
+	public DynamicModel(GameWorld world, Vec2 position) {
+		this.world = world;
 		body = createBody(world);
+		setPosition(position);
+		origin = body.getPosition().clone();
+		// default values
+		setSpeed(0.1f);
+	}
+	
+	public GameWorld getGameWorld() {
+		return world;
 	}
 	
 	public Body getBody() {
 		return body;
 	}
+	
+	public Vec2 getOrigin() {
+		float x = origin.x+world.getArenaPositionX();
+		float y = origin.y;
+		return new Vec2(x, y);
+	}
 
 	public Vec2 getPosition() {
 		return body.getPosition();
+	}
+	
+	public void destroy() {
+		world.world.destroyBody(body);
+	}
+	
+	public Vec2 getGameWorldPosition() {
+		float x = body.getPosition().x+world.getArenaPositionX();
+		float y = body.getPosition().y;
+		return new Vec2(x, y);
 	}
 	
 	public float getAngle() {
@@ -54,6 +83,14 @@ public abstract class DynamicModel {
 		this.width = width;
 	}
 	
-	protected abstract Body createBody(World world);
+	public float getSpeed() {
+		return speed;
+	}
+	
+	public void setSpeed(float speed) {
+		this.speed = speed;
+	}
+	
+	protected abstract Body createBody(GameWorld world);
 	
 }

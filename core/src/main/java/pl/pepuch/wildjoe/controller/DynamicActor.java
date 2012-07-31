@@ -9,32 +9,61 @@ public abstract class DynamicActor {
 	
 	protected DynamicView view;
 	protected DynamicModel model;
+	private boolean isMovingLeft;
+	private boolean isMovingRight;
 	
 	public void moveLeft() {
-		float x = model.getPosition().x-0.1f;
-		float y = model.getPosition().y;
-		model.setPosition(new Vec2(x, y));
+		float x = model().getPosition().x-model().getSpeed();
+		float y = model().getPosition().y;
+		model().setPosition(new Vec2(x, y));
 	}
 	
 	public void moveRight() {
-		float x = model.getPosition().x+0.1f;
-		float y = model.getPosition().y;
-		model.setPosition(new Vec2(x, y));
+		float x = model().getPosition().x+model().getSpeed();
+		float y = model().getPosition().y;
+		model().setPosition(new Vec2(x, y));
 	}
 	
-	public DynamicView getView() {
-		return view;
+	public void jump() {
+		if (!isJumping()) {
+			float impulse = model().getBody().getMass() * 80;
+			model().getBody().applyLinearImpulse(new Vec2(0, impulse), model().getBody().getWorldCenter());
+		}
 	}
 	
-	public DynamicModel getModel() {
-		return model;
+	public boolean isMovingLeft() {
+		return isMovingLeft;
+	}
+	
+	public void isMovingLeft(boolean isMovingLeft) {
+		this.isMovingLeft = isMovingLeft;
+		if (isMovingLeft) {
+			this.isMovingRight = !isMovingLeft;
+		}
+	}
+	
+	public boolean isMovingRight() {
+		return isMovingRight;
+	}
+	
+	public void isMovingRight(boolean isMovingRight) {
+		this.isMovingRight = isMovingRight;
+		if (isMovingRight) {
+			this.isMovingLeft = !isMovingRight;
+		}
+	}
+	
+	public boolean isJumping() {
+		return (int)model().getBody().getLinearVelocity().y!=0 ? true : false;
 	}
 	
 	public void destroy() {
-		// TODO usunac tec body
-		view.getLayer().destroy();
+		view().destroy();
+		model().destroy();
 	}
 	
 	public abstract void paint(float alpha);
 	public abstract void update(float delta);
+	public abstract DynamicModel model();
+	public abstract DynamicView view();
 }

@@ -1,26 +1,26 @@
 package pl.pepuch.wildjoe.view;
 
-import pl.pepuch.wildjoe.model.PlayerModel;
+import pl.pepuch.wildjoe.model.MummyModel;
 import playn.core.Image;
 import playn.core.PlayN;
 
-public class PlayerView extends DynamicView {
+public class MummyView extends DynamicView {
 	
 	private Animation animationLeft;
 	private Animation animationRight;
 	private Animation animationIdle;
 	
-	public PlayerView(PlayerModel player) {
-		super(player);
+	public MummyView(MummyModel mummy) {
+		super(mummy);
 		
 		Image imageRunLeft = PlayN.assets().getImage("images/runLeft.png");
 		Image imageRunRight = PlayN.assets().getImage("images/runRight.png");
 		Image imageIdle = PlayN.assets().getImage("images/idle.png");
-
+		
 		int size = 64;
-		animationRight = new Animation(imageRunRight, size, size, 10, 66);
-		animationLeft = new Animation(imageRunLeft, size, size, 10, 66);
-		animationIdle = new Animation(imageIdle, size, size, 1, 66);
+		animationRight = new Animation(imageRunRight, size, size, 10, 99);
+		animationLeft = new Animation(imageRunLeft, size, size, 10, 99);
+		animationIdle = new Animation(imageIdle, size, size, 1, 99);
 		
 		animationIdle.setVisible(true);
 		animationLeft.setVisible(false);

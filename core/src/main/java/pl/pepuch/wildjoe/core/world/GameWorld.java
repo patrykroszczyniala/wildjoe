@@ -16,26 +16,33 @@ import pl.pepuch.wildjoe.controller.Player;
 import pl.pepuch.wildjoe.core.WildJoe;
 import playn.core.CanvasImage;
 import playn.core.DebugDrawBox2D;
+import playn.core.ImageLayer;
 import playn.core.PlayN;
 
 public class GameWorld {
 	
 	// pozwala debugowac Box2d
-	private DebugDrawBox2D debugDraw;
+	public DebugDrawBox2D debugDraw;
 	// swiat Box2d
 	public World world;
 	// lista dodanych cial
 	List<DynamicActor> gameBodyList;
+	List<DynamicActor> gameBodyListTemp;
 	public List<DynamicActor> gameBodyListToRemove;
 	// obiekt zawodnika
-	public Player player;
+	private Player player;
+	// pozycja areny
+	private Vec2 arenaPosition;
 	
 	public PointCounter pointCounter;
 	public Background background;
 	private float worldWidth;
+	private boolean isGameBodyListBlocked;
 	
 	public GameWorld() {
+		isGameBodyListBlocked = false;
 		gameBodyList = new ArrayList<DynamicActor>();
+		gameBodyListTemp = new ArrayList<DynamicActor>();
 		gameBodyListToRemove = new ArrayList<DynamicActor>();
 		Vec2 gravity = new Vec2(0.0f, 10.0f);
 		boolean doSleep = true;
@@ -49,10 +56,8 @@ public class GameWorld {
 		// tablica wynikow
 		pointCounter = new PointCounter();
 		graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
-	}
-	
-	public static float physUnitPerScreenUnit() {
-		return 1f/32f;
+		// arena initial position
+		setArenaPosition(new Vec2(0.0f, 0.0f));
 	}
 	
 	public void paint(float alpha) {
@@ -72,23 +77,34 @@ public class GameWorld {
 	}
 	
 	public void update(float delta) {
-		float leftEnd = getScreenWidth()*0.33f;
-		float rightEnd = getScreenWidth()*0.66f;
+		world.step(0.033f, 10, 10);
 		
-		if (player.getModel().getPosition().x<leftEnd && player.isMovingLeft()) {
+		for (Iterator<DynamicActor> actor = gameBodyListTemp.iterator(); actor.hasNext();) {
+			DynamicActor body = actor.next();
+			add(body);
+		}
+		gameBodyListTemp.clear();
+		
+		isGameBodyListBlocked = true;
+		
+		float leftEnd = getScreenWidth()*0.33f-player.model().getWidth();
+		float rightEnd = getScreenWidth()*0.66f;
+		if (player.model().getPosition().x<leftEnd && player.isMovingLeft()) {
 			background.moveLeft();
 			for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
 				DynamicActor body = actor.next();
-				body.update(delta);
-				body.moveRight();
+				float x = body.model().getPosition().x+player.model().getSpeed();
+				float y = body.model().getPosition().y;
+				body.model().setPosition(new Vec2(x, y));
 			}
 		}
-		else if (player.getModel().getPosition().x>rightEnd && player.isMovingRight()) {
+		else if (player.model().getPosition().x>rightEnd && player.isMovingRight()) {
 			background.moveRight();
 			for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
 				DynamicActor body = actor.next();
-				body.update(delta);
-				body.moveLeft();
+				float x = body.model().getPosition().x-player.model().getSpeed();
+				float y = body.model().getPosition().y;
+				body.model().setPosition(new Vec2(x, y));
 			}
 		}
 		else {
@@ -99,21 +115,30 @@ public class GameWorld {
 				player.moveRight();
 			}
 		}
-	
+		
+		// update bodies
+		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
+			DynamicActor body = actor.next();
+			body.update(delta);
+		}
 		player.update(delta);
 		pointCounter.getIface().update(delta);
-		world.step(0.033f, 10, 10);
 		// remove bodies
 		for (Iterator<DynamicActor> iterator = gameBodyListToRemove.iterator(); iterator.hasNext();) {
 			DynamicActor body = (DynamicActor)iterator.next();
-			world.destroyBody(body.getModel().getBody());
 			body.destroy();
 		}
+		
+		isGameBodyListBlocked = false;
+		
 	}
 	
 	private void enableDebug() {
-		CanvasImage image = graphics().createImage(1,1);
-		graphics().rootLayer().add(graphics().createImageLayer(image));
+		CanvasImage image = graphics().createImage((int) (getScreenWidth() / WildJoe.physUnitPerScreenUnit), 
+				(int) (getScreenHeight() / WildJoe.physUnitPerScreenUnit));
+		ImageLayer layer = graphics().createImageLayer(image);
+		layer.setDepth(10);
+		PlayN.graphics().rootLayer().add(layer);
 		debugDraw = new DebugDrawBox2D();
 		debugDraw.setCanvas(image);
 		debugDraw.setFlipY(false);
@@ -121,23 +146,37 @@ public class GameWorld {
 		debugDraw.setFillAlpha(75);
 		debugDraw.setStrokeWidth(2.0f);
 		debugDraw.setFlags(DebugDraw.e_shapeBit | DebugDraw.e_jointBit | DebugDraw.e_aabbBit);
-		debugDraw.setCamera(0, 0, 1f / GameWorld.physUnitPerScreenUnit());
+		debugDraw.setCamera(0, 0, 1f / WildJoe.physUnitPerScreenUnit);
 		world.setDebugDraw(debugDraw);
 	}
 	
 	public void add(DynamicActor gameBody) {
-		gameBodyList.add(gameBody);
-		PlayN.graphics().rootLayer().add(gameBody.getView().getLayer());
-		gameBody.getModel().getBody().setUserData(gameBody);
+		if (!isGameBodyListBlocked) {
+			gameBodyList.add(gameBody);
+			PlayN.graphics().rootLayer().add(gameBody.view().getLayer());
+			gameBody.model().getBody().setUserData(gameBody);
+		}
+		else {
+			gameBodyListTemp.add(gameBody);
+			PlayN.graphics().rootLayer().add(gameBody.view().getLayer());
+			gameBody.model().getBody().setUserData(gameBody);
+		}
 	}
 	
+	public void setArenaPosition(Vec2 arenaPosition) {
+		this.arenaPosition = arenaPosition;
+	}
+	
+	public float getArenaPositionX() {
+		return arenaPosition.x+2.0f; // TODO +2.0f powinno byc z automatu a nie z reki wpisane!
+	}
 	
 	public float getScreenWidth() {
-		return graphics().width()*physUnitPerScreenUnit();
+		return graphics().width()*WildJoe.physUnitPerScreenUnit;
 	}
 	
 	public float getScreenHeight() {
-		return graphics().height()*physUnitPerScreenUnit();
+		return graphics().height()*WildJoe.physUnitPerScreenUnit;
 	}
 	
 	public float getWorldHeight() {
@@ -148,12 +187,24 @@ public class GameWorld {
 		if (worldWidth==0.0f) {
 			for (Iterator<DynamicActor> iterator = gameBodyList.iterator(); iterator.hasNext();) {
 				DynamicActor body = (DynamicActor)iterator.next();
-				if (worldWidth < body.getModel().getPosition().x)
-					worldWidth = body.getModel().getPosition().x;
+				if (worldWidth < body.model().getPosition().x)
+					worldWidth = body.model().getPosition().x;
 			}
 			worldWidth++; //zwiekszam szerokosc o 1, tzn o szerokosc jednego klocka
 		}
 		return worldWidth;
 	}
-
+	
+	public List<DynamicActor> getGameBodyList() {
+		return gameBodyList;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
 }

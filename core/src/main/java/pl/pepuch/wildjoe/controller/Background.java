@@ -3,8 +3,8 @@ package pl.pepuch.wildjoe.controller;
 import java.util.Iterator;
 
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.World;
 
+import pl.pepuch.wildjoe.core.world.GameWorld;
 import pl.pepuch.wildjoe.model.BackgroundModel;
 import pl.pepuch.wildjoe.view.BackgroundView;
 import playn.core.Layer;
@@ -12,16 +12,10 @@ import playn.core.Layer;
 
 public class Background extends StaticActor {
 	
-	public Background(World world, Vec2 position) {
+	public Background(GameWorld world, Vec2 position) {
 		model = new BackgroundModel();
-		view = new BackgroundView((BackgroundModel)model);
-		view.getLayer().setDepth(-1);
-	}
-
-	public void paint(float alpha) {
-	}
-	
-	public void update(float delta) {
+		view = new BackgroundView(model());
+		view().getLayer().setDepth(-1);
 	}
 	
 	public void moveRight() {
@@ -40,6 +34,16 @@ public class Background extends StaticActor {
 				l.setOrigin(l.originX() + (1f/l.depth()), l.originY());
 			}
 		}
+	}
+
+	@Override
+	public BackgroundView view() {
+		return (BackgroundView)view;
+	}
+
+	@Override
+	public BackgroundModel model() {
+		return (BackgroundModel)model;
 	}
 		
 }

@@ -6,21 +6,21 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
 
 import pl.pepuch.wildjoe.core.WildJoe;
+import pl.pepuch.wildjoe.core.world.GameWorld;
 import playn.core.PlayN;
 
 public class WallModel extends DynamicModel {
 	
-	public WallModel(World world) {
-		super(world);
+	public WallModel(GameWorld world, Vec2 position) {
+		super(world, position);
 	}
 	
 	@Override
-	protected Body createBody(World world) {
-		width = 0.00001f;
-		height = PlayN.graphics().height()*WildJoe.physUnitPerScreenUnit;
+	protected Body createBody(GameWorld world) {
+		width = 2.0f;
+		height = PlayN.graphics().height()*WildJoe.physUnitPerScreenUnit*1.5f;
 		
 		bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.STATIC;
@@ -35,10 +35,13 @@ public class WallModel extends DynamicModel {
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.0f;
+		fixtureDef.density = 30.0f;
 		
-		body = world.createBody(bodyDef);
+		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
-		body.setUserData(this);
+		body.setSleepingAllowed(false);
+		body.setAwake(true);
+		body.setActive(true);
 		
 		return body;
 	}

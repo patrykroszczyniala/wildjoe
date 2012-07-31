@@ -6,16 +6,19 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+
+import pl.pepuch.wildjoe.core.world.GameWorld;
 
 public class BlockModel extends DynamicModel {
 	
-	public BlockModel(World world) {
-		super(world);
+	private boolean isBoundary;
+	
+	public BlockModel(GameWorld world, Vec2 position) {
+		super(world, position);
 	}
 	
 	@Override
-	protected Body createBody(World world) {
+	protected Body createBody(GameWorld world) {
 		width = 1.0f;
 		height = 1.0f;
 		
@@ -31,13 +34,23 @@ public class BlockModel extends DynamicModel {
 		fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
-		fixtureDef.restitution = 0.2f;
+		fixtureDef.restitution = 0.01f;
 		
-		body = world.createBody(bodyDef);
+		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
 		body.setUserData(this);
 		
+		setBoundary(false);
+		
 		return body;
+	}
+	
+	public boolean isBoundary() {
+		return isBoundary;
+	}
+	
+	public void setBoundary(boolean isBoundary) {
+		this.isBoundary = isBoundary;
 	}
 
 }

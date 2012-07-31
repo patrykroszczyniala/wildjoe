@@ -6,15 +6,16 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
+
+import pl.pepuch.wildjoe.core.world.GameWorld;
 
 public class PlayerModel extends DynamicModel {
 	
-	public PlayerModel(World world) {
-		super(world);
+	public PlayerModel(GameWorld world, Vec2 position) {
+		super(world, position);
 	}
 	
-	public Body createBody(World world) {
+	public Body createBody(GameWorld world) {
 		width = 1.0f;
 		height = 2.0f;
 		
@@ -31,11 +32,20 @@ public class PlayerModel extends DynamicModel {
 	    fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
-		fixtureDef.restitution = 0.0f;
+		fixtureDef.restitution = 0.1f;
 		fixtureDef.density = 30.0f;
 
-		body = world.createBody(bodyDef);
+		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
+		// body will be active all the time
+		body.setSleepingAllowed(false);
+		body.setAwake(false);
+		// wake up body
+		body.applyForce(body.getLocalCenter(), body.getLocalCenter());
+		// player will not change his angle !
+		body.setFixedRotation(true);
+		
+		setSpeed(0.1f);
 		
 		return body;
 	}

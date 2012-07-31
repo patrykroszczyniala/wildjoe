@@ -8,12 +8,7 @@ public abstract class StaticActor {
 	protected StaticView view;
 	protected StaticModel model;
 	
-	public StaticView getView() {
-		return view;
-	}
-	
-	public StaticModel getModel() {
-		return model;
-	}
+	protected abstract StaticView view();
+	protected abstract StaticModel model();
 	
 }

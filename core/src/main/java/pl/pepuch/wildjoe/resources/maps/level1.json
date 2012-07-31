@@ -43,21 +43,23 @@
     {"type": "NormalBlock", "x":38.0, "y":14.0, "a":0.0},
     {"type": "NormalBlock", "x":39.0, "y":14.0, "a":0.0},
     {"type": "NormalBlock", "x":40.0, "y":14.0, "a":0.0},
-    {"type": "NormalBlock", "x":41.0, "y":14.0, "a":0.0},
+    {"type": "NormalBlock", "x":41.0, "y":14.0, "a":0.0}, {"type": "NormalBlock", "x":41.0, "y":13.0, "a":0.0},
     {"type": "NormalBlock", "x":42.0, "y":14.0, "a":0.0},
-    {"type": "NormalBlock", "x":43.0, "y":14.0, "a":0.0},
+    {"type": "NormalBlock", "x":43.0, "y":14.0, "a":0.0}, {"type": "Mummy", "x":43.0, "y":12.0, "a":0.0},
     {"type": "NormalBlock", "x":44.0, "y":14.0, "a":0.0},
     {"type": "NormalBlock", "x":45.0, "y":14.0, "a":0.0},
     {"type": "NormalBlock", "x":46.0, "y":14.0, "a":0.0},
-    {"type": "NormalBlock", "x":47.0, "y":14.0, "a":0.0},
+    {"type": "NormalBlock", "x":47.0, "y":14.0, "a":0.0}, {"type": "NormalBlock", "x":47.0, "y":13.0, "a":0.0},
     {"type": "NormalBlock", "x":48.0, "y":14.0, "a":0.0},
     {"type": "NormalBlock", "x":49.0, "y":14.0, "a":0.0},
     {"type": "NormalBlock", "x":50.0, "y":14.0, "a":0.0},
     
+    {"type": "NormalBlock", "x":4.0, "y":5.0, "a":0.0},
     {"type": "NormalBlock", "x":5.0, "y":5.0, "a":0.0},
-    {"type": "NormalBlock", "x":6.0, "y":5.0, "a":0.0},
+    {"type": "NormalBlock", "x":6.0, "y":5.0, "a":0.0}, {"type": "Mummy", "x":6.0, "y":3.0, "a":0.0},
     {"type": "NormalBlock", "x":7.0, "y":5.0, "a":0.0},
     {"type": "NormalBlock", "x":8.0, "y":5.0, "a":0.0},
+    {"type": "NormalBlock", "x":9.0, "y":5.0, "a":0.0},
     
     {"type": "NormalBlock", "x":10.0, "y":8.0, "a":0.0},
     {"type": "NormalBlock", "x":11.0, "y":8.0, "a":0.0},
@@ -99,12 +101,7 @@
     {"type": "NormalBlock", "x":47.0, "y":6.0, "a":0.0}, {"type": "PrizeCoin", "x":47.0, "y":5.0, "a":0.0}, {"type": "PrizeCoin", "x":47.0, "y":4.0, "a":0.0},
     {"type": "NormalBlock", "x":48.0, "y":6.0, "a":0.0}, {"type": "PrizeCoin", "x":48.0, "y":5.0, "a":0.0}, {"type": "PrizeCoin", "x":48.0, "y":4.0, "a":0.0},
     {"type": "NormalBlock", "x":49.0, "y":6.0, "a":0.0}, {"type": "PrizeCoin", "x":49.0, "y":5.0, "a":0.0},
-    {"type": "NormalBlock", "x":50.0, "y":6.0, "a":0.0}, {"type": "PrizeCoin", "x":50.0, "y":5.0, "a":0.0},
-    
-    {"type": "PrizeCoin", "x":20.0, "y":13.0, "a":0.0},
-    {"type": "PrizeCoin", "x":21.0, "y":13.0, "a":0.0},
-    {"type": "PrizeCoin", "x":22.0, "y":13.0, "a":0.0},
-    {"type": "PrizeCoin", "x":23.0, "y":13.0, "a":0.0}
+    {"type": "NormalBlock", "x":50.0, "y":6.0, "a":0.0}, {"type": "PrizeCoin", "x":50.0, "y":5.0, "a":0.0}
     
   ]
 }

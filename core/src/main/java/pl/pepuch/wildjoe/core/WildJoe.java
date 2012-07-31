@@ -2,6 +2,7 @@ package pl.pepuch.wildjoe.core;
 
 import pl.pepuch.wildjoe.core.world.GameWorld;
 import playn.core.Game;
+import playn.core.PlayN;
 import playn.core.ResourceCallback;
 
 public class WildJoe implements Game {
@@ -22,6 +23,7 @@ public class WildJoe implements Game {
 					@Override
 					public void done(GameWorld resource) {
 						world = resource;
+						PlayN.keyboard().setListener(new WildJoeKeyboardListener(world));
 					}
 				});
 	}
