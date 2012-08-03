@@ -21,7 +21,7 @@ public class CoinModel extends DynamicModel {
 		height = 1.0f;
 		
 		bodyDef = new BodyDef();
-	    bodyDef.type = BodyType.KINEMATIC;
+	    bodyDef.type = BodyType.STATIC;
 	    PolygonShape shape = new PolygonShape();
 	    Vec2[] polygon = new Vec2[4];
 	    polygon[0] = new Vec2(0, 0);
@@ -31,8 +31,9 @@ public class CoinModel extends DynamicModel {
 		shape.set(polygon, polygon.length);
 		fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.friction = 1.0f;
-		fixtureDef.restitution = 0.2f;
+		fixtureDef.friction = 0.0f;
+		fixtureDef.restitution = 0.0f;
+		fixtureDef.density = 0.0f;
 		
 		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);

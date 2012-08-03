@@ -15,10 +15,6 @@ public class Cartridge extends DynamicActor {
 		model().setPosition(position);
 		model().getBody().setUserData(this);
 	}
-	
-	public void shoot(Vec2 impulse, Vec2 point) {
-		model().getBody().applyLinearImpulse(impulse, point);
-	}
 
 	public void paint(float alpha) {
 		view().paint(alpha);

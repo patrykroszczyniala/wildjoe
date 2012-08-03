@@ -45,12 +45,18 @@ public class MummyModel extends DynamicModel {
 
 		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
-		body.setFixedRotation(true); // mummy will not change his angle !
+		// body will be active all the time
+		body.setSleepingAllowed(false);
+		body.setAwake(false);
+		// wake up body
+		body.applyForce(body.getLocalCenter(), body.getLocalCenter());
+		// player will not change his angle !
+		body.setFixedRotation(true);
 		
 		aabb = new AABB();
 		queryCallback = new MummyQueryCallback();
 		
-		setSpeed(0.05f);
+		setSpeed(0.02f);
 		
 		return body;
 	}

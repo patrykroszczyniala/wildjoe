@@ -18,10 +18,10 @@ import playn.core.ResourceCallback;
 
 public class Map {
 	
-	public static final String BLOCK_NORMAL = "NormalBlock";
-	public static final String PLAYER_NORMAL = "NormalPlayer";
+	public static final String BLOCK_NORMAL = "Block";
+	public static final String PLAYER_NORMAL = "Player";
 	public static final String MUMMY = "Mummy";
-	public static final String PRIZE_COIN = "PrizeCoin";
+	public static final String PRIZE_COIN = "Coin";
 	
 	public static void load(int level, final ResourceCallback<GameWorld> callback) {
 		
@@ -120,7 +120,7 @@ public class Map {
 						}
 						
 						if (!hasLeftNeighbor || !hasRightNeighbor) {
-							block.model().setBoundary(true);
+							block.model().setBoundary(true, hasLeftNeighbor, hasRightNeighbor);
 						}
 					}
 				}

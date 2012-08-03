@@ -18,9 +18,9 @@ public class MummyView extends DynamicView {
 		Image imageIdle = PlayN.assets().getImage("images/idle.png");
 		
 		int size = 64;
-		animationRight = new Animation(imageRunRight, size, size, 10, 99);
-		animationLeft = new Animation(imageRunLeft, size, size, 10, 99);
-		animationIdle = new Animation(imageIdle, size, size, 1, 99);
+		animationRight = new Animation(imageRunRight, size, size, 10, 120);
+		animationLeft = new Animation(imageRunLeft, size, size, 10, 120);
+		animationIdle = new Animation(imageIdle, size, size, 1, 120);
 		
 		animationIdle.setVisible(true);
 		animationLeft.setVisible(false);

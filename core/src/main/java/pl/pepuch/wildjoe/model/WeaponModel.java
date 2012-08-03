@@ -9,23 +9,21 @@ import org.jbox2d.dynamics.FixtureDef;
 
 import pl.pepuch.wildjoe.core.world.GameWorld;
 
-public class BlockModel extends DynamicModel {
+public class WeaponModel extends DynamicModel {
 	
-	private boolean isBoundary;
-	private boolean hasLeftNeighbor;
-	private boolean hasRightNeighbor;
+	private float frequency;
 	
-	public BlockModel(GameWorld world, Vec2 position) {
+	public WeaponModel(GameWorld world, Vec2 position) {
 		super(world, position);
 	}
 	
 	@Override
 	protected Body createBody(GameWorld world) {
-		width = 1.0f;
-		height = 1.0f;
+		width = 0.5f;
+		height = 0.2f;
 		
 		bodyDef = new BodyDef();
-	    bodyDef.type = BodyType.STATIC;
+	    bodyDef.type = BodyType.DYNAMIC;
 	    PolygonShape shape = new PolygonShape();
 	    Vec2[] polygon = new Vec2[4];
 	    polygon[0] = new Vec2(0, 0);
@@ -33,36 +31,24 @@ public class BlockModel extends DynamicModel {
 		polygon[2] = new Vec2(width, height);
 		polygon[3] = new Vec2(0, height);
 		shape.set(polygon, polygon.length);
-		fixtureDef = new FixtureDef();
+	    
+	    fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.01f;
 		
 		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
-		body.setUserData(this);
-		
-		setBoundary(false, false, false);
-		
+
 		return body;
 	}
 	
-	public boolean isBoundary() {
-		return isBoundary;
+	public void setFrequency(float frequency) {
+		this.frequency = frequency;
 	}
 	
-	public void setBoundary(boolean isBoundary, boolean hasLeftNeighbor, boolean hasRightNeighbor) {
-		this.isBoundary = isBoundary;
-		this.hasLeftNeighbor = hasLeftNeighbor;
-		this.hasRightNeighbor = hasRightNeighbor;
+	public float frequency() {
+		return frequency;
 	}
 	
-	public boolean hasLeftNeighbor() {
-		return hasLeftNeighbor;
-	}
-	
-	public boolean hasRightNeighbor() {
-		return hasRightNeighbor;
-	}
-
 }

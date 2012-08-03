@@ -19,19 +19,19 @@ public class Background extends StaticActor {
 	}
 	
 	public void moveRight() {
-		for (Iterator<Layer> layer = view.getLayers().iterator(); layer.hasNext();) {
+		for (Iterator<Layer> layer = view().getLayers().iterator(); layer.hasNext();) {
 			Layer l = (Layer)layer.next();
-			if (!((BackgroundView)view).isBackground(l)) {
-				l.setOrigin(l.originX() - (1f/l.depth()), l.originY());
+			if (!(view().isBackground(l))) {
+				l.setOrigin(l.originX() - (0.8f/l.depth()), l.originY());
 			}
 		}
 	}
 	
 	public void moveLeft() {
-		for (Iterator<Layer> layer = view.getLayers().iterator(); layer.hasNext();) {
+		for (Iterator<Layer> layer = view().getLayers().iterator(); layer.hasNext();) {
 			Layer l = (Layer)layer.next();
-			if (!((BackgroundView)view).isBackground(l)) {
-				l.setOrigin(l.originX() + (1f/l.depth()), l.originY());
+			if (!(view().isBackground(l))) {
+				l.setOrigin(l.originX() + (0.8f/l.depth()), l.originY());
 			}
 		}
 	}

@@ -11,6 +11,8 @@ import pl.pepuch.wildjoe.core.world.GameWorld;
 
 public class CartridgeModel extends DynamicModel {
 	
+	private float range;
+	
 	public CartridgeModel(GameWorld world, Vec2 position) {
 		super(world, position);
 	}
@@ -32,9 +34,16 @@ public class CartridgeModel extends DynamicModel {
 		
 		body = world.world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
-
-		
+	
 		return body;
+	}
+	
+	public void setRange(float range) {
+		this.range = range;
+	}
+	
+	public float range() {
+		return range;
 	}
 	
 }

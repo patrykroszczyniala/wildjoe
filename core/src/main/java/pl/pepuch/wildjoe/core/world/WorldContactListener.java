@@ -11,7 +11,6 @@ import pl.pepuch.wildjoe.controller.Coin;
 import pl.pepuch.wildjoe.controller.DynamicActor;
 import pl.pepuch.wildjoe.controller.Mummy;
 import pl.pepuch.wildjoe.controller.Player;
-import pl.pepuch.wildjoe.model.BlockModel;
 
 public class WorldContactListener implements ContactListener {
 	
@@ -37,11 +36,11 @@ public class WorldContactListener implements ContactListener {
 		// --------------------------------
 		// KILL PLAYER AND DESTROY CARTRIDGE
 		if (body1 instanceof Player && body2 instanceof Cartridge) {
-			gameWorld.gameBodyListToRemove.add(body1);
+//			gameWorld.gameBodyListToRemove.add(body1);
 			gameWorld.gameBodyListToRemove.add(body2);
 		}
 		else if (body1 instanceof Cartridge && body2 instanceof Player) {
-			gameWorld.gameBodyListToRemove.add(body2);
+//			gameWorld.gameBodyListToRemove.add(body2);
 			gameWorld.gameBodyListToRemove.add(body1);
 		}
 		// DESTROY CARTRIDGES
@@ -52,22 +51,11 @@ public class WorldContactListener implements ContactListener {
 			gameWorld.gameBodyListToRemove.add(body2);
 		}
 		// MYMMY AI ;)
-		if (body1 instanceof Mummy && body2 instanceof Block) {
-			BlockModel blockModel = (BlockModel)body2.model();
-			Mummy mummy = (Mummy)body1;
-			if (blockModel.isBoundary()) {
-				if (mummy.isMovingLeft()) {
-					mummy.isMovingRight(true);
-				}
-				else if (mummy.isMovingRight()) {
-					mummy.isMovingLeft(true);
-				}
-			}
-		}
-		if (body1 instanceof Block && body2 instanceof Mummy) {
-			BlockModel blockModel = (BlockModel)body1.model();
-			Mummy mummy = (Mummy)body2;
-			if (blockModel.isBoundary()) {
+		if ((body1 instanceof Mummy && body2 instanceof Block) || (body1 instanceof Block && body2 instanceof Mummy)) {
+			Mummy mummy =  (body1 instanceof Mummy) ? (Mummy)body1 : (Mummy)body2;
+			Block block =  (body1 instanceof Block) ? (Block)body1 : (Block)body2;
+			
+			if (block.model().isBoundary()) {
 				if (mummy.isMovingLeft()) {
 					mummy.isMovingRight(true);
 				}
@@ -80,7 +68,7 @@ public class WorldContactListener implements ContactListener {
 
 	@Override
 	public void endContact(Contact contact) {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

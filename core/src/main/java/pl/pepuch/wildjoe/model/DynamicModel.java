@@ -19,12 +19,12 @@ public abstract class DynamicModel {
 	protected float speed;
 	
 	public DynamicModel(GameWorld world, Vec2 position) {
+		// default values
+		setSpeed(0.1f);
 		this.world = world;
 		body = createBody(world);
 		setPosition(position);
 		origin = body.getPosition().clone();
-		// default values
-		setSpeed(0.1f);
 	}
 	
 	public GameWorld getGameWorld() {
