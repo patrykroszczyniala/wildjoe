@@ -8,8 +8,8 @@ import pl.pepuch.wildjoe.controller.Background;
 import pl.pepuch.wildjoe.controller.Block;
 import pl.pepuch.wildjoe.controller.Coin;
 import pl.pepuch.wildjoe.controller.DynamicActor;
+import pl.pepuch.wildjoe.controller.FinishFlag;
 import pl.pepuch.wildjoe.controller.Mummy;
-import pl.pepuch.wildjoe.controller.Player;
 import pl.pepuch.wildjoe.controller.Wall;
 import playn.core.AssetWatcher;
 import playn.core.Json;
@@ -20,18 +20,17 @@ public class Map {
 	
 	public static final String BLOCK_NORMAL = "Block";
 	public static final String PLAYER_NORMAL = "Player";
+	public static final String FINISH_FLAG = "FinishFlag";
 	public static final String MUMMY = "Mummy";
 	public static final String PRIZE_COIN = "Coin";
 	
-	public static void load(int level, final ResourceCallback<GameWorld> callback) {
+	public static void load(final GameWorld gameWorld, int level, final ResourceCallback<GameWorld> callback) {
 		
-		final GameWorld gameWorld = new GameWorld();
-
 		PlayN.assets().getText("maps/level"+level+".json", new ResourceCallback<String>() {
 			
 			@Override
 			public void error(Throwable err) {
-				callback.error(err);				
+				callback.error(err);
 			}
 			
 			@Override
@@ -48,9 +47,10 @@ public class Map {
 						callback.done(gameWorld);
 					}
 				});
-			
+
 				Json.Object json = PlayN.json().parse(resource);
 				Json.Array entities = json.getArray("Entities");
+				
 				for (int i=0; i<entities.length(); i++) {
 					Json.Object jsonEntity = entities.getObject(i);
 					String type = jsonEntity.getString("type");
@@ -64,21 +64,20 @@ public class Map {
 					else if (type.equalsIgnoreCase(Map.PRIZE_COIN)) {
 						block = new Coin(gameWorld, new Vec2(x, y));
 					}
+					else if (type.equalsIgnoreCase(Map.FINISH_FLAG)) {
+						block = new FinishFlag(gameWorld, new Vec2(x, y));
+					}
 					else if (type.equalsIgnoreCase(Map.MUMMY)) {
 						block = new Mummy(gameWorld, new Vec2(x, y));
 					}
 					else if (type.equalsIgnoreCase(Map.PLAYER_NORMAL)) {
-						Player player = new Player(gameWorld, new Vec2(1.0f, 0.0f));
-						gameWorld.setPlayer(player);
-						PlayN.graphics().rootLayer().add(player.view().getLayer());
+						gameWorld.player().model().setPosition(new Vec2(1.0f, 0.0f));
 					}
 					if (block!=null) {
 						gameWorld.add(block);
 					}
 				}
-				// add background
-				gameWorld.background = new Background(gameWorld, new Vec2(0.0f, 0.0f)); 
-				PlayN.graphics().rootLayer().add(gameWorld.background.view().getLayer());
+				
 				// left and right wall
 				Wall wallFirst = new Wall(gameWorld, new Vec2(-2.0f, -2.0f));
 				gameWorld.add(wallFirst);

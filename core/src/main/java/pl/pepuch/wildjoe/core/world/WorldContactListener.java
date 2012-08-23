@@ -6,9 +6,9 @@ import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
 
 import pl.pepuch.wildjoe.controller.Block;
-import pl.pepuch.wildjoe.controller.Cartridge;
 import pl.pepuch.wildjoe.controller.Coin;
 import pl.pepuch.wildjoe.controller.DynamicActor;
+import pl.pepuch.wildjoe.controller.FinishFlag;
 import pl.pepuch.wildjoe.controller.Mummy;
 import pl.pepuch.wildjoe.controller.Player;
 
@@ -31,25 +31,25 @@ public class WorldContactListener implements ContactListener {
 		if (body1 instanceof Player && body2 instanceof Coin) {
 			// punkt!
 			gameWorld.gameBodyListToRemove.add(body2);
-			gameWorld.pointCounter.setPoints(gameWorld.pointCounter.getPoints()+10);
+			gameWorld.pointCounter().setPoints(gameWorld.pointCounter().getPoints()+10);
 		}
 		// --------------------------------
 		// KILL PLAYER AND DESTROY CARTRIDGE
-		if (body1 instanceof Player && body2 instanceof Cartridge) {
+//		if (body1 instanceof Player && body2 instanceof Cartridge) {
 //			gameWorld.gameBodyListToRemove.add(body1);
-			gameWorld.gameBodyListToRemove.add(body2);
-		}
-		else if (body1 instanceof Cartridge && body2 instanceof Player) {
 //			gameWorld.gameBodyListToRemove.add(body2);
-			gameWorld.gameBodyListToRemove.add(body1);
-		}
+//		}
+//		else if (body1 instanceof Cartridge && body2 instanceof Player) {
+//			gameWorld.gameBodyListToRemove.add(body2);
+//			gameWorld.gameBodyListToRemove.add(body1);
+//		}
 		// DESTROY CARTRIDGES
-		if (body1 instanceof Cartridge && (!(body2 instanceof Mummy)  && !(body2 instanceof Cartridge))) {
-			gameWorld.gameBodyListToRemove.add(body1);
-		}
-		if (body2 instanceof Cartridge && (!(body1 instanceof Mummy) && !(body1 instanceof Cartridge))) {
-			gameWorld.gameBodyListToRemove.add(body2);
-		}
+//		if (body1 instanceof Cartridge && (!(body2 instanceof Mummy)  && !(body2 instanceof Cartridge))) {
+//			gameWorld.gameBodyListToRemove.add(body1);
+//		}
+//		if (body2 instanceof Cartridge && (!(body1 instanceof Mummy) && !(body1 instanceof Cartridge))) {
+//			gameWorld.gameBodyListToRemove.add(body2);
+//		}
 		// MYMMY AI ;)
 		if ((body1 instanceof Mummy && body2 instanceof Block) || (body1 instanceof Block && body2 instanceof Mummy)) {
 			Mummy mummy =  (body1 instanceof Mummy) ? (Mummy)body1 : (Mummy)body2;
@@ -63,6 +63,14 @@ public class WorldContactListener implements ContactListener {
 					mummy.isMovingLeft(true);
 				}
 			}
+		}
+		// kill player if he touch enemy
+		if ((body1 instanceof Mummy && body2 instanceof Player) || (body1 instanceof Player && body2 instanceof Mummy)) {
+			gameWorld.gameOver();
+		}
+		// game finished or next level
+		if ((body1 instanceof FinishFlag && body2 instanceof Player) || (body1 instanceof Player && body2 instanceof FinishFlag)) {
+			gameWorld.loadNextLevel(true);
 		}
 	}
 

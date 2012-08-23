@@ -14,7 +14,7 @@ public class WildJoeKeyboardListener implements Listener {
 	
 	public WildJoeKeyboardListener(GameWorld gameWorld) {
 		this.gameWorld = gameWorld;
-		player = this.gameWorld.getPlayer();
+		player = this.gameWorld.player();
 	}
 	
 	@Override

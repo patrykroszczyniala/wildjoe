@@ -28,7 +28,7 @@ public class PointCounter {
 		nameroot.add(label);
 		nameroot.setSize(100, 20);
 		nameroot.setStyles(Styles.make(Style.HALIGN.left));
-		nameroot.layer.setDepth(0f);
+		nameroot.layer.setDepth(1f);
 	}
 	
 	public Layer getLayer() {
@@ -46,6 +46,11 @@ public class PointCounter {
 	
 	public Integer getPoints() {
 		return points;
+	}
+	
+	public void destroy() {
+		nameroot.destroyAll();
+		iface.destroyRoot(nameroot);
 	}
 	
 }

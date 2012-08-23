@@ -19,7 +19,7 @@ public class MummyQueryCallback implements QueryCallback {
 		if (fixture.getBody().getUserData()!=null && fixture.getBody().getUserData() instanceof DynamicActor) {
 			DynamicActor body = (DynamicActor)fixture.getBody().getUserData();
 			if (body instanceof Player && mummy!=null) {
-				mummy.shoot();
+//				mummy.shoot();
 			}
 		}
 		

@@ -13,6 +13,7 @@ public class PlayerModel extends DynamicModel {
 	
 	public PlayerModel(GameWorld world, Vec2 position) {
 		super(world, position);
+		System.out.println("world:! "+world);
 	}
 	
 	public Body createBody(GameWorld world) {
@@ -36,6 +37,9 @@ public class PlayerModel extends DynamicModel {
 		fixtureDef.density = 30.0f;
 
 		body = world.world.createBody(bodyDef);
+		System.out.println("body: "+body);
+		System.out.println("world: "+world);
+		System.out.println("world.world: "+world.world);
 		body.createFixture(fixtureDef);
 		// body will be active all the time
 		body.setSleepingAllowed(false);

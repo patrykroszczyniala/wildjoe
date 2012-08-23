@@ -29,17 +29,20 @@ public class GameWorld {
 	List<DynamicActor> gameBodyList;
 	List<DynamicActor> gameBodyListTemp;
 	public List<DynamicActor> gameBodyListToRemove;
-	// obiekt zawodnika
-	private Player player;
+	
 	// pozycja areny
 	private Vec2 arenaPosition;
 	
-	public PointCounter pointCounter;
 	public Background background;
 	private float worldWidth;
 	private boolean isGameBodyListBlocked;
+	public WildJoe game;
+	private Player player;
+	private PointCounter pointCounter;
+	private boolean loadNextLevel;
 	
-	public GameWorld() {
+	public GameWorld(WildJoe game) {
+		this.game = game;
 		isGameBodyListBlocked = false;
 		gameBodyList = new ArrayList<DynamicActor>();
 		gameBodyListTemp = new ArrayList<DynamicActor>();
@@ -52,12 +55,25 @@ public class GameWorld {
 	    }
 
 		// contact listener
-		world.setContactListener(new WorldContactListener(this));
+		world.setContactListener(null);
 		// tablica wynikow
 		pointCounter = new PointCounter();
-		graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
+		// zawodnik
+		player = new Player(this, new Vec2(1.0f, 0.0f));
 		// arena initial position
 		setArenaPosition(new Vec2(0.0f, 0.0f));
+	}
+	
+	public void init() {
+        // add background
+        background = new Background(this, new Vec2(0.0f, 0.0f)); 
+        PlayN.graphics().rootLayer().add(background.view().getLayer());
+        // add player
+		graphics().rootLayer().add(player.view().getLayer());
+        // add point counter
+		graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
+        // set world contact listener
+		world.setContactListener(new WorldContactListener(this));
 	}
 	
 	public void paint(float alpha) {
@@ -78,6 +94,10 @@ public class GameWorld {
 	
 	public void update(float delta) {
 		world.step(0.033f, 10, 10);
+		
+		if (loadNextLevel) {
+			game.nextLevel(); // DZIALA KURWA !!! HAHAHA!
+		}
 		
 		for (Iterator<DynamicActor> actor = gameBodyListTemp.iterator(); actor.hasNext();) {
 			DynamicActor body = actor.next();
@@ -199,12 +219,42 @@ public class GameWorld {
 		return gameBodyList;
 	}
 	
-	public Player getPlayer() {
+	public void gameOver() {
+		player.die();
+		pointCounter.destroy();
+		pointCounter.getLayer().destroy();
+		clear();
+		// TODO this.destroy();
+		game.init();
+	}
+	
+	public void clear() {
+		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
+			DynamicActor body = actor.next();
+			world.destroyBody(body.model().getBody());
+			try {
+				PlayN.graphics().rootLayer().remove(body.view().getLayer());
+			}
+			catch(Exception e) {
+				
+			}
+		}
+		gameBodyList.clear();
+		gameBodyListTemp.clear();
+		gameBodyListToRemove.clear();
+		world.setContactListener(null);
+	}
+	
+	public Player player() {
 		return player;
 	}
 	
-	public void setPlayer(Player player) {
-		this.player = player;
+	public PointCounter pointCounter() {
+		return pointCounter;
 	}
 	
+	public void loadNextLevel(boolean loadNextLevel) {
+		this.loadNextLevel = loadNextLevel;
+	}
+    
 }
