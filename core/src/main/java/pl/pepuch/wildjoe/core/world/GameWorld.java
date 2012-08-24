@@ -74,6 +74,8 @@ public class GameWorld {
 		graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
         // set world contact listener
 		world.setContactListener(new WorldContactListener(this));
+		// reset world width
+		worldWidth = 0.0f;
 	}
 	
 	public void paint(float alpha) {
