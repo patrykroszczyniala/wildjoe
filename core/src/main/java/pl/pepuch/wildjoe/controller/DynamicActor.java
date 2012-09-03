@@ -11,6 +11,7 @@ public abstract class DynamicActor {
 	protected DynamicModel model;
 	private boolean isMovingLeft;
 	private boolean isMovingRight;
+	private boolean isVisible;
 	
 	public void moveLeft() {
 		float x = model().getPosition().x-model().getSpeed();
@@ -60,6 +61,15 @@ public abstract class DynamicActor {
 	public void destroy() {
 		view().destroy();
 		model().destroy();
+	}
+	
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+		view().getLayer().setVisible(isVisible);
+	}
+	
+	public boolean isVisible() {
+		return isVisible;
 	}
 	
 	public abstract void paint(float alpha);

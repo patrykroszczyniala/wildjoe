@@ -27,26 +27,19 @@ public class GameWorld {
 	public World world;
 	// lista dodanych cial
 	List<DynamicActor> gameBodyList;
-	List<DynamicActor> gameBodyListTemp;
-	public List<DynamicActor> gameBodyListToRemove;
 	
 	// pozycja areny
 	private Vec2 arenaPosition;
 	
 	public Background background;
 	private float worldWidth;
-	private boolean isGameBodyListBlocked;
 	public WildJoe game;
 	private Player player;
 	private PointCounter pointCounter;
-	private boolean loadNextLevel;
-	
+
 	public GameWorld(WildJoe game) {
 		this.game = game;
-		isGameBodyListBlocked = false;
 		gameBodyList = new ArrayList<DynamicActor>();
-		gameBodyListTemp = new ArrayList<DynamicActor>();
-		gameBodyListToRemove = new ArrayList<DynamicActor>();
 		Vec2 gravity = new Vec2(0.0f, 10.0f);
 		boolean doSleep = true;
 	    world = new World(gravity, doSleep);
@@ -58,21 +51,25 @@ public class GameWorld {
 		world.setContactListener(null);
 		// tablica wynikow
 		pointCounter = new PointCounter();
+		PlayN.graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
+		pointCounter.setVisible(false);
 		// zawodnik
 		player = new Player(this, new Vec2(1.0f, 0.0f));
+		PlayN.graphics().rootLayer().add(player.view().getLayer());
+		player.setVisible(false);
+		// background
+        background = new Background(this, new Vec2(0.0f, 0.0f));
+        PlayN.graphics().rootLayer().add(background.view().getLayer());
+        background.setVisible(false);
 		// arena initial position
 		setArenaPosition(new Vec2(0.0f, 0.0f));
 	}
 	
 	public void init() {
-        // add background
-        background = new Background(this, new Vec2(0.0f, 0.0f)); 
-        PlayN.graphics().rootLayer().add(background.view().getLayer());
-        // add player
-		graphics().rootLayer().add(player.view().getLayer());
-        // add point counter
-		graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
-        // set world contact listener
+		player.setVisible(true);
+		background.setVisible(true);
+		pointCounter.setVisible(true);
+		// set world contact listener
 		world.setContactListener(new WorldContactListener(this));
 		// reset world width
 		worldWidth = 0.0f;
@@ -96,18 +93,6 @@ public class GameWorld {
 	
 	public void update(float delta) {
 		world.step(0.033f, 10, 10);
-		
-		if (loadNextLevel) {
-			game.nextLevel(); // DZIALA KURWA !!! HAHAHA!
-		}
-		
-		for (Iterator<DynamicActor> actor = gameBodyListTemp.iterator(); actor.hasNext();) {
-			DynamicActor body = actor.next();
-			add(body);
-		}
-		gameBodyListTemp.clear();
-		
-		isGameBodyListBlocked = true;
 		
 		float leftEnd = getScreenWidth()*0.33f-player.model().getWidth();
 		float rightEnd = getScreenWidth()*0.66f;
@@ -145,13 +130,7 @@ public class GameWorld {
 		}
 		player.update(delta);
 		pointCounter.getIface().update(delta);
-		// remove bodies
-		for (Iterator<DynamicActor> iterator = gameBodyListToRemove.iterator(); iterator.hasNext();) {
-			DynamicActor body = (DynamicActor)iterator.next();
-			body.destroy();
-		}
 		
-		isGameBodyListBlocked = false;
 		
 	}
 	
@@ -172,17 +151,25 @@ public class GameWorld {
 		world.setDebugDraw(debugDraw);
 	}
 	
-	public void add(DynamicActor gameBody) {
-		if (!isGameBodyListBlocked) {
-			gameBodyList.add(gameBody);
-			PlayN.graphics().rootLayer().add(gameBody.view().getLayer());
-			gameBody.model().getBody().setUserData(gameBody);
-		}
-		else {
-			gameBodyListTemp.add(gameBody);
-			PlayN.graphics().rootLayer().add(gameBody.view().getLayer());
-			gameBody.model().getBody().setUserData(gameBody);
-		}
+	public void add(final DynamicActor gameBody) {
+//		PlayN.invokeLater(new Runnable() {
+//			@Override
+//			public void run() {
+				gameBodyList.add(gameBody);
+				PlayN.graphics().rootLayer().add(gameBody.view().getLayer());
+				gameBody.model().getBody().setUserData(gameBody);
+//			}
+//		});
+	}
+	
+	public void remove(final DynamicActor gameBody) {
+		PlayN.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				gameBodyList.remove(gameBody);
+				gameBody.destroy();
+			}
+		});
 	}
 	
 	public void setArenaPosition(Vec2 arenaPosition) {
@@ -224,26 +211,27 @@ public class GameWorld {
 	public void gameOver() {
 		player.die();
 		pointCounter.destroy();
-		pointCounter.getLayer().destroy();
-		clear();
-		// TODO this.destroy();
-		game.init();
+		background.destroy();
+		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
+			DynamicActor body = actor.next();
+			body.destroy();
+		}
+		gameBodyList.clear();
+		world.setContactListener(null);
+		game.menu().show();
+		game.gameStarted = false;
+		game.level = 1;
 	}
 	
 	public void clear() {
+		player.setVisible(false);
+		background.setVisible(false);
+		pointCounter.setVisible(false);
 		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
 			DynamicActor body = actor.next();
-			world.destroyBody(body.model().getBody());
-			try {
-				PlayN.graphics().rootLayer().remove(body.view().getLayer());
-			}
-			catch(Exception e) {
-				
-			}
+			body.destroy();
 		}
 		gameBodyList.clear();
-		gameBodyListTemp.clear();
-		gameBodyListToRemove.clear();
 		world.setContactListener(null);
 	}
 	
@@ -255,8 +243,4 @@ public class GameWorld {
 		return pointCounter;
 	}
 	
-	public void loadNextLevel(boolean loadNextLevel) {
-		this.loadNextLevel = loadNextLevel;
-	}
-    
 }

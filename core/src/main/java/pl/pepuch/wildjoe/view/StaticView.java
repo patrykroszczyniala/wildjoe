@@ -41,4 +41,9 @@ public abstract class StaticView {
 		return layers;
 	}
 	
+	public void destroy() {
+		layer.destroy();
+		layers.clear();
+	}
+	
 }

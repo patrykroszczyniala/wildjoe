@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 
 import pl.pepuch.wildjoe.core.world.GameWorld;
 import playn.core.Game;
+import playn.core.Image;
+import playn.core.ImageLayer;
 import playn.core.PlayN;
 import playn.core.ResourceCallback;
 import react.UnitSlot;
@@ -14,12 +16,8 @@ public class WildJoe implements Game {
 	public static boolean debug = false;
 	private GameWorld gameWorld;
 	private Menu menu;
-	int level = 1;
-	public boolean gameStarted;
-	
-	public WildJoe() {
-		menu = new Menu();
-	}
+	public int level = 1;
+	public boolean gameStarted = false;
 	
 	@Override
 	/**
@@ -27,10 +25,8 @@ public class WildJoe implements Game {
      * POWINNO byc wywolywane tylko raz (tak jak jest napisane w klasie Game)
 	 */
 	public void init() {
-		level = 1;
-		gameWorld = new GameWorld(this);
+		menu = new Menu();
 		gameStarted = false;
-		gameWorld.clear();
 		menu.show();
 		
 		// menu buttons support
@@ -41,44 +37,63 @@ public class WildJoe implements Game {
 				System.exit(0);
 			}
 		});
+		final WildJoe game = this;
 		menu.start().clicked().connect(new UnitSlot() {
 			@Override
 			public void onEmit() {
-				gameWorld.clear();
+				menu.hide();
+				gameWorld = new GameWorld(game);
 				loadLevel(level);
 			}
 		});
 	}
 	
-	public void loadLevel(int level) {
-		pl.pepuch.wildjoe.core.world.Map.load(gameWorld, level,
-			new ResourceCallback<GameWorld>() {
-				@Override
-				public void error(Throwable err) {
-//					err.printStackTrace();
-					if (err instanceof FileNotFoundException) {
-						gameWorld.gameOver();
+	public void loadLevel(final int level) {
+		gameWorld.clear();
+		Image loadingImage = PlayN.assets().getImage("images/loading.png");
+		final ImageLayer loadingLayer = PlayN.graphics().createImageLayer(loadingImage);
+		loadingLayer.setTranslation((PlayN.graphics().width()/2)-loadingImage.width()/2, (PlayN.graphics().height()/2)-loadingImage.height()/2);
+		PlayN.graphics().rootLayer().add(loadingLayer);
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				PlayN.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						pl.pepuch.wildjoe.core.world.Map.load(gameWorld, level,
+							new ResourceCallback<GameWorld>() {
+								@Override
+								public void error(Throwable err) {
+									if (err instanceof FileNotFoundException) {
+										gameWorld.gameOver();
+									}
+									PlayN.graphics().rootLayer().remove(loadingLayer);
+								}
+					
+								@Override
+								public void done(GameWorld resource) {
+									menu.hide();
+									PlayN.keyboard().setListener(new WildJoeKeyboardListener(gameWorld));
+									gameWorld.init();
+									if (!gameStarted) {
+										gameStarted = true;
+									}
+									PlayN.graphics().rootLayer().remove(loadingLayer);
+								}
+							}
+						);
 					}
-				}
-	
-				@Override
-				public void done(GameWorld resource) {
-					menu.hide();
-					PlayN.keyboard().setListener(new WildJoeKeyboardListener(gameWorld));
-					gameWorld.init();
-					if (!gameStarted) {
-						gameStarted = true;
-					}
-					gameWorld.loadNextLevel(false);
-				}
+					
+				});
 			}
-		);
+		}).start();
 	}
 	
-	public synchronized void nextLevel() {
+	public void nextLevel() {
 		level++;
 		PlayN.keyboard().setListener(null);
-		gameWorld.clear();
 		loadLevel(level);
 	}
 
@@ -105,6 +120,10 @@ public class WildJoe implements Game {
 	@Override
 	public int updateRate() {
 		return 25;
+	}
+	
+	public Menu menu() {
+		return menu;
 	}
 	
 }

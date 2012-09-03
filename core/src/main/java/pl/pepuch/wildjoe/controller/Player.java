@@ -20,15 +20,17 @@ public class Player extends DynamicActor {
 	
 	public void update(float delta) {
 		view().update(delta);
-
-		if (isMovingRight()) {
-			view().setAnimationRightVisible(true);
-		}
-		else if (isMovingLeft()) {
-			view().setAnimationLeftVisible(true);
-		}
-		else {
-			view().setAnimationIdleVisible(true);
+		
+		if (isVisible()) {
+			if (isMovingRight()) {
+				view().setAnimationRightVisible(true);
+			}
+			else if (isMovingLeft()) {
+				view().setAnimationLeftVisible(true);
+			}
+			else {
+				view().setAnimationIdleVisible(true);
+			}
 		}
 	}
 

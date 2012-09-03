@@ -17,6 +17,7 @@ public class PointCounter {
 	private Interface iface;
 	private Label label;
 	private int points;
+	private boolean isVisible;
 	
 	public PointCounter() {
 		Image icon = PlayN.assets().getImage("images/coinIcon.png");
@@ -51,6 +52,15 @@ public class PointCounter {
 	public void destroy() {
 		nameroot.destroyAll();
 		iface.destroyRoot(nameroot);
+	}
+	
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+		getLayer().setVisible(isVisible);
+	}
+	
+	public boolean isVisible() {
+		return isVisible;
 	}
 	
 }

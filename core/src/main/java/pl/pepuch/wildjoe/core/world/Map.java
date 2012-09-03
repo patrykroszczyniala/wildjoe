@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import org.jbox2d.common.Vec2;
 
-import pl.pepuch.wildjoe.controller.Background;
 import pl.pepuch.wildjoe.controller.Block;
 import pl.pepuch.wildjoe.controller.Coin;
 import pl.pepuch.wildjoe.controller.DynamicActor;

@@ -11,6 +11,7 @@ import pl.pepuch.wildjoe.controller.DynamicActor;
 import pl.pepuch.wildjoe.controller.FinishFlag;
 import pl.pepuch.wildjoe.controller.Mummy;
 import pl.pepuch.wildjoe.controller.Player;
+import playn.core.PlayN;
 
 public class WorldContactListener implements ContactListener {
 	
@@ -30,7 +31,7 @@ public class WorldContactListener implements ContactListener {
 			body2 = (DynamicActor)contact.getFixtureB().getBody().getUserData();
 		if (body1 instanceof Player && body2 instanceof Coin) {
 			// punkt!
-			gameWorld.gameBodyListToRemove.add(body2);
+			gameWorld.remove(body2);
 			gameWorld.pointCounter().setPoints(gameWorld.pointCounter().getPoints()+10);
 		}
 		// --------------------------------
@@ -70,7 +71,12 @@ public class WorldContactListener implements ContactListener {
 		}
 		// game finished or next level
 		if ((body1 instanceof FinishFlag && body2 instanceof Player) || (body1 instanceof Player && body2 instanceof FinishFlag)) {
-			gameWorld.loadNextLevel(true);
+			PlayN.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					gameWorld.game.nextLevel();
+				}
+			});
 		}
 	}
 
