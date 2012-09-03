@@ -17,7 +17,6 @@ public class Animation extends AnimScreen {
 	public Animation(Image image, int frameWidth, int frameHeight, int framesCount, float secsPerFrame) {
 		isVisible = true;
 		groupLayer = PlayN.graphics().createGroupLayer();
-		System.out.println(frameWidth);
 		frames = new SimpleFrames(image, frameWidth, frameHeight, framesCount);
 		anim.repeat(groupLayer).flipbook(groupLayer, new Flipbook(frames, secsPerFrame));
 	}

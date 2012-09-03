@@ -18,6 +18,7 @@ public class WildJoe implements Game {
 	private Menu menu;
 	public int level = 1;
 	public boolean gameStarted = false;
+	Loader loader;
 	
 	@Override
 	/**
@@ -25,6 +26,7 @@ public class WildJoe implements Game {
      * POWINNO byc wywolywane tylko raz (tak jak jest napisane w klasie Game)
 	 */
 	public void init() {
+		loader = new Loader();
 		menu = new Menu();
 		gameStarted = false;
 		menu.show();
@@ -50,10 +52,7 @@ public class WildJoe implements Game {
 	
 	public void loadLevel(final int level) {
 		gameWorld.clear();
-		Image loadingImage = PlayN.assets().getImage("images/loading.png");
-		final ImageLayer loadingLayer = PlayN.graphics().createImageLayer(loadingImage);
-		loadingLayer.setTranslation((PlayN.graphics().width()/2)-loadingImage.width()/2, (PlayN.graphics().height()/2)-loadingImage.height()/2);
-		PlayN.graphics().rootLayer().add(loadingLayer);
+		loader.start();
 		
 		new Thread(new Runnable() {
 			@Override
@@ -69,7 +68,7 @@ public class WildJoe implements Game {
 									if (err instanceof FileNotFoundException) {
 										gameWorld.gameOver();
 									}
-									PlayN.graphics().rootLayer().remove(loadingLayer);
+//									loader.stop();
 								}
 					
 								@Override
@@ -80,7 +79,7 @@ public class WildJoe implements Game {
 									if (!gameStarted) {
 										gameStarted = true;
 									}
-									PlayN.graphics().rootLayer().remove(loadingLayer);
+//									loader.stop();
 								}
 							}
 						);
@@ -109,9 +108,18 @@ public class WildJoe implements Game {
 
 	@Override
 	public void update(float delta) {
+		if (loader!=null && loader.isRunning()) {
+			System.out.println("LOADER_UPDATE");
+			loader.update(delta);
+		}
+			
 		if (gameStarted) {
 			gameWorld.update(delta);
 		}
+//		else if (loader.isRunning()) {
+//			System.out.println("LOADER_UPDATE");
+//			loader.update(delta);
+//		}
 		else {
 			menu.update(delta);
 		}
