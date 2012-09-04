@@ -24,11 +24,11 @@
       <artifactId>playn-jbox2d</artifactId>
       <version>${playn.version}</version>
     </dependency>
-	<dependency>
-		<groupId>com.threerings</groupId>
-			<artifactId>tripleplay</artifactId>
-		<version>1.4</version>
-	</dependency>
+    <dependency>
+	<groupId>com.threerings</groupId>
+	  <artifactId>tripleplay</artifactId>
+	<version>${playn.version}</version>
+    </dependency>
   </dependencies>
 
   <build>

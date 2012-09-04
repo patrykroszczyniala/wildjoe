@@ -46,7 +46,7 @@ public abstract class DynamicModel {
 	}
 	
 	public void destroy() {
-		world.world.destroyBody(body);
+		world.world().destroyBody(body);
 	}
 	
 	public Vec2 getGameWorldPosition() {

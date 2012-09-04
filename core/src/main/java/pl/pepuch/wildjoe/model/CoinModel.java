@@ -35,7 +35,7 @@ public class CoinModel extends DynamicModel {
 		fixtureDef.restitution = 0.0f;
 		fixtureDef.density = 0.0f;
 		
-		body = world.world.createBody(bodyDef);
+		body = world.world().createBody(bodyDef);
 		body.createFixture(fixtureDef);
 		body.setUserData(this);
 		

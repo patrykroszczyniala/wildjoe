@@ -43,7 +43,7 @@ public class MummyModel extends DynamicModel {
 		fixtureDef.restitution = 0.1f;
 		fixtureDef.density = 30.0f;
 
-		body = world.world.createBody(bodyDef);
+		body = world.world().createBody(bodyDef);
 		body.createFixture(fixtureDef);
 		// body will be active all the time
 		body.setSleepingAllowed(false);

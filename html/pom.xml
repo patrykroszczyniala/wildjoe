@@ -66,6 +66,21 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+	<configuration>
+	    <disableClassMetadata>false</disableClassMetadata>
+	</configuration>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       
       <!-- allows testing of HTML backend via: mvn integration-test -Phtml -->
       <plugin>

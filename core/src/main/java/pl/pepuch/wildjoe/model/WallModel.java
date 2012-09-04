@@ -37,7 +37,7 @@ public class WallModel extends DynamicModel {
 		fixtureDef.restitution = 0.0f;
 		fixtureDef.density = 30.0f;
 		
-		body = world.world.createBody(bodyDef);
+		body = world.world().createBody(bodyDef);
 		body.createFixture(fixtureDef);
 		body.setSleepingAllowed(false);
 		body.setAwake(true);

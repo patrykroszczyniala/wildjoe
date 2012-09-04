@@ -24,14 +24,14 @@ public class GameWorld {
 	// pozwala debugowac Box2d
 	public DebugDrawBox2D debugDraw;
 	// swiat Box2d
-	public World world;
+	private World world;
 	// lista dodanych cial
 	List<DynamicActor> gameBodyList;
 	
 	// pozycja areny
 	private Vec2 arenaPosition;
 	
-	public Background background;
+	private Background background;
 	private float worldWidth;
 	public WildJoe game;
 	private Player player;
@@ -241,6 +241,10 @@ public class GameWorld {
 	
 	public PointCounter pointCounter() {
 		return pointCounter;
+	}
+	
+	public World world() {
+	    return world;
 	}
 	
 }

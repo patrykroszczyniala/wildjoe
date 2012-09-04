@@ -18,7 +18,7 @@ public class WildJoe implements Game {
 	private Menu menu;
 	public int level = 1;
 	public boolean gameStarted = false;
-	Loader loader;
+//	Loader loader;
 	
 	@Override
 	/**
@@ -26,7 +26,7 @@ public class WildJoe implements Game {
      * POWINNO byc wywolywane tylko raz (tak jak jest napisane w klasie Game)
 	 */
 	public void init() {
-		loader = new Loader();
+//		loader = new Loader();
 		menu = new Menu();
 		gameStarted = false;
 		menu.show();
@@ -36,7 +36,7 @@ public class WildJoe implements Game {
 			@Override
 			public void onEmit() {
 				// TODO destroy!!
-				System.exit(0);
+//				System.exit(0); // doesn't work for GWT
 			}
 		});
 		final WildJoe game = this;
@@ -52,11 +52,11 @@ public class WildJoe implements Game {
 	
 	public void loadLevel(final int level) {
 		gameWorld.clear();
-		loader.start();
+//		loader.start();
 		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
+//		new Thread(new Runnable() {
+//			@Override
+//			public void run() {
 				PlayN.invokeLater(new Runnable() {
 
 					@Override
@@ -65,9 +65,9 @@ public class WildJoe implements Game {
 							new ResourceCallback<GameWorld>() {
 								@Override
 								public void error(Throwable err) {
-									if (err instanceof FileNotFoundException) {
+//									if (err instanceof FileNotFoundException) {
 										gameWorld.gameOver();
-									}
+//									}
 //									loader.stop();
 								}
 					
@@ -86,8 +86,8 @@ public class WildJoe implements Game {
 					}
 					
 				});
-			}
-		}).start();
+//			}
+//		}).start();
 	}
 	
 	public void nextLevel() {
@@ -108,10 +108,10 @@ public class WildJoe implements Game {
 
 	@Override
 	public void update(float delta) {
-		if (loader!=null && loader.isRunning()) {
-			System.out.println("LOADER_UPDATE");
-			loader.update(delta);
-		}
+//		if (loader!=null && loader.isRunning()) {
+//			System.out.println("LOADER_UPDATE");
+//			loader.update(delta);
+//		}
 			
 		if (gameStarted) {
 			gameWorld.update(delta);

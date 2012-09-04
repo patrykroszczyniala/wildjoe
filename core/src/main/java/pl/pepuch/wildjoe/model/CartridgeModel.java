@@ -32,7 +32,7 @@ public class CartridgeModel extends DynamicModel {
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.01f;
 		
-		body = world.world.createBody(bodyDef);
+		body = world.world().createBody(bodyDef);
 		body.createFixture(fixtureDef);
 	
 		return body;
