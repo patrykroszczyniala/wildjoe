@@ -1,27 +1,32 @@
 package pl.pepuch.wildjoe.view;
 
+import static playn.core.PlayN.graphics;
+
 import java.util.ArrayList;
 
-import pl.pepuch.wildjoe.model.DynamicModel;
-import pl.pepuch.wildjoe.model.StaticModel;
 import playn.core.GroupLayer;
+import playn.core.Image;
 import playn.core.Layer;
 import playn.core.PlayN;
+import tripleplay.game.UIAnimScreen;
 
 
-public abstract class StaticView {
+public abstract class StaticView extends UIAnimScreen {
 
 	private ArrayList<Layer> layers;
 	protected GroupLayer layer;
-	protected DynamicModel model;
 	
-	public StaticView(StaticModel model) {
+	public StaticView() {
 		layers = new ArrayList<Layer>();
 		layer = PlayN.graphics().createGroupLayer();
 	}
 	
-	public DynamicModel getModel() {
-		return model;
+	public Layer addLayerAt(Image image, float x, float y) {
+		GroupLayer layer = graphics().createGroupLayer();
+		layer.addAt(graphics().createImageLayer(image), x, y);
+		addLayer(layer);
+		
+		return layer;
 	}
 	
 	public void addLayer(Layer layer) {
@@ -33,7 +38,7 @@ public abstract class StaticView {
 		this.layer.addAt(layer, x, y);
 	}
 	
-	public Layer getLayer() {
+	public Layer layer() {
 		return layer;
 	}
 	
@@ -44,6 +49,13 @@ public abstract class StaticView {
 	public void destroy() {
 		layer.destroy();
 		layers.clear();
+		layer = null;
+		layers = null;
+	}
+	
+	@Override
+	protected float updateRate() {
+		return 0;
 	}
 	
 }

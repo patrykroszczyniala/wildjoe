@@ -12,6 +12,7 @@ import org.jbox2d.dynamics.World;
 
 import pl.pepuch.wildjoe.controller.Background;
 import pl.pepuch.wildjoe.controller.DynamicActor;
+import pl.pepuch.wildjoe.controller.GameOver;
 import pl.pepuch.wildjoe.controller.Player;
 import pl.pepuch.wildjoe.core.WildJoe;
 import playn.core.CanvasImage;
@@ -36,8 +37,10 @@ public class GameWorld {
 	public WildJoe game;
 	private Player player;
 	private PointCounter pointCounter;
+	public GameOver gameOver;
 
 	public GameWorld(WildJoe game) {
+		gameOver = null;
 		this.game = game;
 		gameBodyList = new ArrayList<DynamicActor>();
 		Vec2 gravity = new Vec2(0.0f, 10.0f);
@@ -47,27 +50,25 @@ public class GameWorld {
 	    	this.enableDebug();
 	    }
 
-		// contact listener
-		world.setContactListener(null);
 		// tablica wynikow
 		pointCounter = new PointCounter();
 		PlayN.graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
 		pointCounter.setVisible(false);
 		// zawodnik
 		player = new Player(this, new Vec2(1.0f, 0.0f));
-		PlayN.graphics().rootLayer().add(player.view().getLayer());
+		PlayN.graphics().rootLayer().add(player.view().layer());
 		player.setVisible(false);
 		// background
-        background = new Background(this, new Vec2(0.0f, 0.0f));
-        PlayN.graphics().rootLayer().add(background.view().getLayer());
-        background.setVisible(false);
+		background = new Background(this, new Vec2(0.0f, 0.0f));
+        PlayN.graphics().rootLayer().add(background.view().layer());
+        player.setVisible(false);
 		// arena initial position
 		setArenaPosition(new Vec2(0.0f, 0.0f));
 	}
 	
 	public void init() {
 		player.setVisible(true);
-		background.setVisible(true);
+        background.setVisible(true);
 		pointCounter.setVisible(true);
 		// set world contact listener
 		world.setContactListener(new WorldContactListener(this));
@@ -76,6 +77,7 @@ public class GameWorld {
 	}
 	
 	public void paint(float alpha) {
+		
 		if (WildJoe.debug) {
 			debugDraw.getCanvas().clear();
 			world.drawDebugData();
@@ -94,23 +96,23 @@ public class GameWorld {
 	public void update(float delta) {
 		world.step(0.033f, 10, 10);
 		
-		float leftEnd = getScreenWidth()*0.33f-player.model().getWidth();
+		float leftEnd = getScreenWidth()*0.33f-player.model().width();
 		float rightEnd = getScreenWidth()*0.66f;
-		if (player.model().getPosition().x<leftEnd && player.isMovingLeft()) {
+		if (player.model().position().x<leftEnd && player.isMovingLeft()) {
 			background.moveLeft();
 			for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
 				DynamicActor body = actor.next();
-				float x = body.model().getPosition().x+player.model().getSpeed();
-				float y = body.model().getPosition().y;
+				float x = body.model().position().x+player.model().speed();
+				float y = body.model().position().y;
 				body.model().setPosition(new Vec2(x, y));
 			}
 		}
-		else if (player.model().getPosition().x>rightEnd && player.isMovingRight()) {
+		else if (player.model().position().x>rightEnd && player.isMovingRight()) {
 			background.moveRight();
 			for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
 				DynamicActor body = actor.next();
-				float x = body.model().getPosition().x-player.model().getSpeed();
-				float y = body.model().getPosition().y;
+				float x = body.model().position().x-player.model().speed();
+				float y = body.model().position().y;
 				body.model().setPosition(new Vec2(x, y));
 			}
 		}
@@ -152,14 +154,8 @@ public class GameWorld {
 	}
 	
 	public void add(final DynamicActor gameBody) {
-//		PlayN.invokeLater(new Runnable() {
-//			@Override
-//			public void run() {
-				gameBodyList.add(gameBody);
-				PlayN.graphics().rootLayer().add(gameBody.view().getLayer());
-				gameBody.model().getBody().setUserData(gameBody);
-//			}
-//		});
+		gameBodyList.add(gameBody);
+		PlayN.graphics().rootLayer().add(gameBody.view().layer());
 	}
 	
 	public void remove(final DynamicActor gameBody) {
@@ -196,8 +192,8 @@ public class GameWorld {
 		if (worldWidth==0.0f) {
 			for (Iterator<DynamicActor> iterator = gameBodyList.iterator(); iterator.hasNext();) {
 				DynamicActor body = (DynamicActor)iterator.next();
-				if (worldWidth < body.model().getPosition().x)
-					worldWidth = body.model().getPosition().x;
+				if (worldWidth < body.model().position().x)
+					worldWidth = body.model().position().x;
 			}
 			worldWidth++; //zwiekszam szerokosc o 1, tzn o szerokosc jednego klocka
 		}
@@ -209,22 +205,23 @@ public class GameWorld {
 	}
 	
 	public void gameOver() {
-		player.die();
-		pointCounter.destroy();
-		background.destroy();
-		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
-			DynamicActor body = actor.next();
-			body.destroy();
-		}
-		gameBodyList.clear();
-		world.setContactListener(null);
-		game.menu().show();
-		game.gameStarted = false;
-		game.level = 1;
+		gameOver = new GameOver(this);
+		gameOver.show();
+		PlayN.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				destroy();
+				game.setLevel(1);
+			}
+		});
 	}
 	
+	// call befere next level
 	public void clear() {
 		player.setVisible(false);
+		background.destroy();
+		background = new Background(this, new Vec2(0.0f, 0.0f));
+        PlayN.graphics().rootLayer().add(background.view().layer());
 		background.setVisible(false);
 		pointCounter.setVisible(false);
 		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
@@ -232,7 +229,25 @@ public class GameWorld {
 			body.destroy();
 		}
 		gameBodyList.clear();
+	}
+	
+	public void destroy() {
+		player.die();
+		player = null;
+		pointCounter.destroy();
+		pointCounter = null;
+		background.destroy();
+		background = null;
+		
+		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
+			DynamicActor body = actor.next();
+			body.destroy();
+		}
+		
+		gameBodyList.clear();
 		world.setContactListener(null);
+		arenaPosition = null;
+		world = null;
 	}
 	
 	public Player player() {
@@ -245,6 +260,10 @@ public class GameWorld {
 	
 	public World world() {
 	    return world;
+	}
+	
+	public WildJoe game() {
+	    return game;
 	}
 	
 }

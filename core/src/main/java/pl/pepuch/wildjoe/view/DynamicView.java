@@ -3,6 +3,7 @@ package pl.pepuch.wildjoe.view;
 import pl.pepuch.wildjoe.core.WildJoe;
 import pl.pepuch.wildjoe.model.DynamicModel;
 import playn.core.GroupLayer;
+import playn.core.Image;
 import playn.core.Layer;
 import playn.core.PlayN;
 
@@ -16,8 +17,16 @@ public abstract class DynamicView {
 		this.model = model;
 	}
 	
-	public DynamicModel getModel() {
+	public DynamicModel model() {
 		return model;
+	}
+	
+	public Layer layer() {
+		return layer;
+	}
+	
+	public void addImage(Image image) {
+		layer.add(PlayN.graphics().createImageLayer(image));
 	}
 	
 	public void addLayer(Layer layer) {
@@ -28,14 +37,10 @@ public abstract class DynamicView {
 		this.layer.addAt(layer, x, y);
 	}
 	
-	public Layer getLayer() {
-		return layer;
-	}
-	
 	public void paint(float alpha) {
-		float x = ((model.getPosition().x * alpha) + (model.getPosition().x * (1f - alpha)))/WildJoe.physUnitPerScreenUnit;
-	    float y = ((model.getPosition().y * alpha) + (model.getPosition().y * (1f - alpha)))/WildJoe.physUnitPerScreenUnit;
-	    float a = (model.getAngle() * alpha) + (model.getAngle() * (1f - alpha));
+		float x = ((model.position().x * alpha) + (model.position().x * (1f - alpha)))/WildJoe.physUnitPerScreenUnit;
+	    float y = ((model.position().y * alpha) + (model.position().y * (1f - alpha)))/WildJoe.physUnitPerScreenUnit;
+	    float a = (model.angle() * alpha) + (model.angle() * (1f - alpha));
 	    if (layer!=null) {
 		    layer.setRotation(a);
 		    layer.setTranslation(x, y);

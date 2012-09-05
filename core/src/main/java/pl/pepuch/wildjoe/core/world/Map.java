@@ -58,16 +58,16 @@ public class Map {
 
 					DynamicActor block = null;
 					if (type.equalsIgnoreCase(Map.BLOCK_NORMAL)) {
-						block = new Block(gameWorld, new Vec2(x, y));
+						block = new Block(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
 					else if (type.equalsIgnoreCase(Map.PRIZE_COIN)) {
-						block = new Coin(gameWorld, new Vec2(x, y));
+						block = new Coin(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
 					else if (type.equalsIgnoreCase(Map.FINISH_FLAG)) {
-						block = new FinishFlag(gameWorld, new Vec2(x, y));
+						block = new FinishFlag(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
 					else if (type.equalsIgnoreCase(Map.MUMMY)) {
-						block = new Mummy(gameWorld, new Vec2(x, y));
+						block = new Mummy(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
 					else if (type.equalsIgnoreCase(Map.PLAYER_NORMAL)) {
 						gameWorld.player().model().setPosition(new Vec2(1.0f, 0.0f));
@@ -81,7 +81,7 @@ public class Map {
 				Wall wallFirst = new Wall(gameWorld, new Vec2(-2.0f, -2.0f));
 				gameWorld.add(wallFirst);
 				// set world start position
-				gameWorld.setArenaPosition(wallFirst.model().getPosition());
+				gameWorld.setArenaPosition(wallFirst.model().position());
 				gameWorld.add(new Wall(gameWorld, new Vec2(gameWorld.getWorldWidth(), -2.0f)));
 				// add blocks before start wall
 				for (int i=1; i<10; i++) {
@@ -97,7 +97,7 @@ public class Map {
 					DynamicActor body = (DynamicActor)iterator.next();
 					if (body instanceof Block) {
 						Block block = (Block)body;
-						Vec2 blockPos = block.model().getOrigin();
+						Vec2 blockPos = block.model().origin();
 						// find block neighbors
 						boolean hasLeftNeighbor = false;
 						boolean hasRightNeighbor = false;
@@ -105,7 +105,7 @@ public class Map {
 							DynamicActor bodyToCheck = (DynamicActor)subIterator.next();
 							if (bodyToCheck instanceof Block) {
 								Block blockToCheck = (Block)bodyToCheck;
-								Vec2 blockToCheckPos = blockToCheck.model().getOrigin();
+								Vec2 blockToCheckPos = blockToCheck.model().origin();
 								if (blockPos.y==blockToCheckPos.y) {
 									if ((blockPos.x+1)==blockToCheckPos.x) {
 										hasRightNeighbor = true;

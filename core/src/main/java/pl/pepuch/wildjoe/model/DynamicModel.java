@@ -15,11 +15,11 @@ public abstract class DynamicModel {
 	protected float height;
 	protected float width;
 	protected GameWorld world;
-	protected final Vec2 origin;
+	protected Vec2 origin;
 	protected float speed;
+	protected Vec2 positionBefore;
 	
 	public DynamicModel(GameWorld world, Vec2 position) {
-		// default values
 		setSpeed(0.1f);
 		this.world = world;
 		body = createBody(world);
@@ -27,35 +27,43 @@ public abstract class DynamicModel {
 		origin = body.getPosition().clone();
 	}
 	
-	public GameWorld getGameWorld() {
+	public GameWorld gameWorld() {
 		return world;
 	}
 	
-	public Body getBody() {
+	public Body body() {
 		return body;
 	}
 	
-	public Vec2 getOrigin() {
+	public Vec2 origin() {
 		float x = origin.x+world.getArenaPositionX();
 		float y = origin.y;
 		return new Vec2(x, y);
 	}
 
-	public Vec2 getPosition() {
+	public Vec2 position() {
 		return body.getPosition();
+	}
+	
+	public Vec2 positionBefore() {
+		return positionBefore;
 	}
 	
 	public void destroy() {
 		world.world().destroyBody(body);
+		bodyDef = null;
+		fixtureDef = null;
+		body = null;
+		origin = null;
 	}
 	
-	public Vec2 getGameWorldPosition() {
+	public Vec2 gameWorldPosition() {
 		float x = body.getPosition().x+world.getArenaPositionX();
 		float y = body.getPosition().y;
 		return new Vec2(x, y);
 	}
 	
-	public float getAngle() {
+	public float angle() {
 		return body.getAngle();
 	}
 	
@@ -64,10 +72,11 @@ public abstract class DynamicModel {
 	}
 	
 	public void setPosition(Vec2 position) {
+		positionBefore = position().clone();
 		body.setTransform(position, body.getAngle());
 	}
 	
-	public float getHeight() {
+	public float height() {
 		return height;
 	}
 	
@@ -75,7 +84,7 @@ public abstract class DynamicModel {
 		this.height = height;
 	}
 	
-	public float getWidth() {
+	public float width() {
 		return width;
 	}
 	
@@ -83,7 +92,7 @@ public abstract class DynamicModel {
 		this.width = width;
 	}
 	
-	public float getSpeed() {
+	public float speed() {
 		return speed;
 	}
 	

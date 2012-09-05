@@ -13,6 +13,7 @@ public class Wall extends DynamicActor {
 		model = new WallModel(world, position);
 		view = new WallView(model());
 		model().setPosition(position);
+		model().body().setUserData(this);
 	}
 
 	public void paint(float alpha) {

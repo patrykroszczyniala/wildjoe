@@ -25,7 +25,7 @@ public class MummyModel extends DynamicModel {
 	
 	public Body createBody(GameWorld world) {
 		width = 1.0f;
-		height = 2.0f;
+		height = 1.96f;
 		
 		bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.DYNAMIC;
@@ -66,7 +66,7 @@ public class MummyModel extends DynamicModel {
 		aabbP2 = p2;
 		aabb.lowerBound.set(aabbP1);
 		aabb.upperBound.set(aabbP2);
-		getBody().getWorld().queryAABB(queryCallback, aabb);
+		body().getWorld().queryAABB(queryCallback, aabb);
 		
 	}
 	
@@ -79,6 +79,14 @@ public class MummyModel extends DynamicModel {
 			vertices[3] = new Vec2(aabbP1.x, aabbP2.y);
 			world.debugDraw.drawPolygon(vertices, 4, Color3f.RED);
 		}
+	}
+	
+	public void destroy() {
+		super.destroy();
+		aabb = null;
+		queryCallback = null;
+		aabbP1 = null;
+		aabbP2 = null;
 	}
 	
 }

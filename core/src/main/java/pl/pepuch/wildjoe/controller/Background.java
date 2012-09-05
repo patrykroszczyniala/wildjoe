@@ -15,7 +15,7 @@ public class Background extends StaticActor {
 	public Background(GameWorld world, Vec2 position) {
 		model = new BackgroundModel();
 		view = new BackgroundView(model());
-		view().getLayer().setDepth(-1);
+		view().layer().setDepth(-1);
 	}
 	
 	public void moveRight() {

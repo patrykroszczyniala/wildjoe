@@ -12,6 +12,7 @@ public class Block extends DynamicActor {
 		model = new BlockModel(world, position);
 		view = new BlockView(model());
 		model().setPosition(position);
+		model().body().setUserData(this);
 	}
 
 	public void paint(float alpha) {

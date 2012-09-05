@@ -34,23 +34,6 @@ public class WorldContactListener implements ContactListener {
 			gameWorld.remove(body2);
 			gameWorld.pointCounter().setPoints(gameWorld.pointCounter().getPoints()+10);
 		}
-		// --------------------------------
-		// KILL PLAYER AND DESTROY CARTRIDGE
-//		if (body1 instanceof Player && body2 instanceof Cartridge) {
-//			gameWorld.gameBodyListToRemove.add(body1);
-//			gameWorld.gameBodyListToRemove.add(body2);
-//		}
-//		else if (body1 instanceof Cartridge && body2 instanceof Player) {
-//			gameWorld.gameBodyListToRemove.add(body2);
-//			gameWorld.gameBodyListToRemove.add(body1);
-//		}
-		// DESTROY CARTRIDGES
-//		if (body1 instanceof Cartridge && (!(body2 instanceof Mummy)  && !(body2 instanceof Cartridge))) {
-//			gameWorld.gameBodyListToRemove.add(body1);
-//		}
-//		if (body2 instanceof Cartridge && (!(body1 instanceof Mummy) && !(body1 instanceof Cartridge))) {
-//			gameWorld.gameBodyListToRemove.add(body2);
-//		}
 		// MYMMY AI ;)
 		if ((body1 instanceof Mummy && body2 instanceof Block) || (body1 instanceof Block && body2 instanceof Mummy)) {
 			Mummy mummy =  (body1 instanceof Mummy) ? (Mummy)body1 : (Mummy)body2;
@@ -65,6 +48,7 @@ public class WorldContactListener implements ContactListener {
 				}
 			}
 		}
+		
 		// kill player if he touch enemy
 		if ((body1 instanceof Mummy && body2 instanceof Player) || (body1 instanceof Player && body2 instanceof Mummy)) {
 			gameWorld.gameOver();
@@ -82,7 +66,6 @@ public class WorldContactListener implements ContactListener {
 
 	@Override
 	public void endContact(Contact contact) {
-		
 	}
 
 	@Override

@@ -28,9 +28,6 @@ public class WildJoeKeyboardListener implements Listener {
 		else if (event.key().name().equalsIgnoreCase(Key.UP.name())) {
 			player.jump();
 		}
-		else if (event.key().name().equalsIgnoreCase(Key.SPACE.name())) {
-			player.shoot();
-		}
 	}
 
 	@Override

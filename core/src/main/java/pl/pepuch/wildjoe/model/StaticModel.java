@@ -9,12 +9,12 @@ public abstract class StaticModel {
 	public StaticModel() {
 	}
 	
-	public Vec2 getPosition() {
+	public Vec2 position() {
 		// TODO StaticModel::getPosition()
 		return null;
 	}
 	
-	public float getAngle() {
+	public float angle() {
 		// TODO StaticModel::getAngle()
 		return 0.0f;
 	}
@@ -25,6 +25,10 @@ public abstract class StaticModel {
 	
 	public void setPosition(Vec2 position) {
 		this.position = position;
+	}
+	
+	public void destroy() {
+		position = null;
 	}
 	
 }

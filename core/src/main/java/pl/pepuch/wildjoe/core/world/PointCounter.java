@@ -11,7 +11,7 @@ import tripleplay.ui.Styles;
 import tripleplay.ui.Stylesheet;
 import tripleplay.ui.layout.AxisLayout;
 
-public class PointCounter {
+public class PointCounter implements Cloneable {
 	
 	private Root nameroot;
 	private Interface iface;
@@ -61,6 +61,17 @@ public class PointCounter {
 	
 	public boolean isVisible() {
 		return isVisible;
+	}
+	
+	public PointCounter clone() {
+		PointCounter pointCounter = new PointCounter();
+		pointCounter.setPoints(getPoints());
+		
+		return pointCounter;
+	}
+	
+	public Root root() {
+		return nameroot;
 	}
 	
 }

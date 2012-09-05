@@ -17,10 +17,10 @@ public class Weapon extends DynamicActor {
 		model = new WeaponModel(world, position);
 		view = new WeaponView(model());
 		model().setPosition(position);
-		model().getBody().setUserData(this);
 		frequencyTime = 0;
 		isShootPossible = false;
 		shooted = false;
+		model().body().setUserData(this);
 	}
 	
 	
@@ -28,23 +28,23 @@ public class Weapon extends DynamicActor {
 	public void shoot(Vec2 impulse) {
 		if (isShootPossible) {
 			float x = 0;
-			float y = model().getBody().getWorldCenter().y+model().getHeight()/2;
-			Cartridge cartridge = new Cartridge(model().getGameWorld(), new Vec2(x, y));
+			float y = model().body().getWorldCenter().y+model().height()/2;
+			Cartridge cartridge = new Cartridge(model().gameWorld(), new Vec2(x, y));
 			
 			// actor is moving left
 			if (impulse.x<0) {
-				x = model().getBody().getPosition().x-cartridge.model().getWidth()-0.1f;
+				x = model().body().getPosition().x-cartridge.model().width()-0.1f;
 			}
 			// actor is moving right
 			else {
-				x = model().getBody().getPosition().x+model().getWidth()+0.1f;
+				x = model().body().getPosition().x+model().width()+0.1f;
 			}
 			
 			cartridge.model().setPosition(new Vec2(x, y));
 			cartridge.model().setSpeed(5f);
 			cartridge.model().setRange(2f);
-			model().getGameWorld().add(cartridge);
-			cartridge.model().getBody().applyLinearImpulse(impulse, model().getBody().getWorldCenter());
+			model().gameWorld().add(cartridge);
+			cartridge.model().body().applyLinearImpulse(impulse, model().body().getWorldCenter());
 			shooted = true;
 		}
 	}

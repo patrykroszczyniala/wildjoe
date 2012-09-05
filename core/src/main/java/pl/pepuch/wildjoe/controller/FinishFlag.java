@@ -12,6 +12,7 @@ public class FinishFlag extends DynamicActor {
 		model = new FinishFlagModel(world, position);
 		view = new FinishFlagView(model());
 		model().setPosition(position);
+		model().body().setUserData(this);
 	}
 
 	public void paint(float alpha) {

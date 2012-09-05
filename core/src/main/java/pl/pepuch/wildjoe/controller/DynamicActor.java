@@ -14,21 +14,21 @@ public abstract class DynamicActor {
 	private boolean isVisible;
 	
 	public void moveLeft() {
-		float x = model().getPosition().x-model().getSpeed();
-		float y = model().getPosition().y;
+		float x = model().position().x-model().speed();
+		float y = model().position().y;
 		model().setPosition(new Vec2(x, y));
 	}
 	
 	public void moveRight() {
-		float x = model().getPosition().x+model().getSpeed();
-		float y = model().getPosition().y;
+		float x = model().position().x+model().speed();
+		float y = model().position().y;
 		model().setPosition(new Vec2(x, y));
 	}
 	
 	public void jump() {
 		if (!isJumping()) {
-			float impulse = model().getBody().getMass() * 80;
-			model().getBody().applyLinearImpulse(new Vec2(0, impulse), model().getBody().getWorldCenter());
+			float impulse = model().body().getMass() * 80;
+			model().body().applyLinearImpulse(new Vec2(0, impulse), model().body().getWorldCenter());
 		}
 	}
 	
@@ -55,7 +55,7 @@ public abstract class DynamicActor {
 	}
 	
 	public boolean isJumping() {
-		return (int)model().getBody().getLinearVelocity().y!=0 ? true : false;
+		return (int)model().body().getLinearVelocity().y!=0 ? true : false;
 	}
 	
 	public void destroy() {
@@ -65,7 +65,7 @@ public abstract class DynamicActor {
 	
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
-		view().getLayer().setVisible(isVisible);
+		view().layer().setVisible(isVisible);
 	}
 	
 	public boolean isVisible() {

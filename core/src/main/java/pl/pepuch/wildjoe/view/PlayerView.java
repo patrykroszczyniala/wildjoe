@@ -64,7 +64,7 @@ public class PlayerView extends DynamicView {
 	public void setAnimationRightVisible(boolean isVisible) {
 		animationRight.setVisible(isVisible);
 		if (isVisible) {
-			getLayer().setVisible(isVisible);
+			layer().setVisible(isVisible);
 			setAnimationIdleVisible(false);
 			setAnimationLeftVisible(false);
 		}
@@ -77,7 +77,7 @@ public class PlayerView extends DynamicView {
 	public void setAnimationLeftVisible(boolean isVisible) {
 		animationLeft.setVisible(isVisible);
 		if (isVisible) {
-			getLayer().setVisible(isVisible);
+			layer().setVisible(isVisible);
 			setAnimationRightVisible(false);
 			setAnimationIdleVisible(false);
 		}
@@ -90,7 +90,7 @@ public class PlayerView extends DynamicView {
 	public void setAnimationIdleVisible(boolean isVisible) {
 		animationIdle.setVisible(isVisible);
 		if (isVisible) {
-			getLayer().setVisible(isVisible);
+			layer().setVisible(isVisible);
 			setAnimationRightVisible(false);
 			setAnimationLeftVisible(false);
 		}

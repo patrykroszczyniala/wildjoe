@@ -21,7 +21,7 @@ public class CoinModel extends DynamicModel {
 		height = 1.0f;
 		
 		bodyDef = new BodyDef();
-	    bodyDef.type = BodyType.STATIC;
+	    bodyDef.type = BodyType.KINEMATIC;
 	    PolygonShape shape = new PolygonShape();
 	    Vec2[] polygon = new Vec2[4];
 	    polygon[0] = new Vec2(0, 0);

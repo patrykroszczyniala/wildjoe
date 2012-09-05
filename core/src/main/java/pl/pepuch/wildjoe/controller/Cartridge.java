@@ -13,7 +13,7 @@ public class Cartridge extends DynamicActor {
 		model = new CartridgeModel(world, position);
 		view = new CartridgeView(model());
 		model().setPosition(position);
-		model().getBody().setUserData(this);
+		model().body().setUserData(this);
 	}
 
 	public void paint(float alpha) {

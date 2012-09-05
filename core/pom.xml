@@ -25,9 +25,9 @@
       <version>${playn.version}</version>
     </dependency>
     <dependency>
-	<groupId>com.threerings</groupId>
+	  <groupId>com.threerings</groupId>
 	  <artifactId>tripleplay</artifactId>
-	<version>${playn.version}</version>
+	  <version>1.4</version>
     </dependency>
   </dependencies>
 

@@ -11,7 +11,7 @@ public class Player extends DynamicActor {
 	public Player(GameWorld world, Vec2 position) {
 		model = new PlayerModel(world, position);
 		view = new PlayerView(model());
-		model().getBody().setUserData(this);
+		model().body().setUserData(this);
 	}
 	
 	public void paint(float alpha) {
@@ -39,15 +39,15 @@ public class Player extends DynamicActor {
 	}
 
 	public void shoot() {
-		Cartridge cartridge = new Cartridge(model().getGameWorld(), model().getBody().getWorldCenter());
-		float impulse = cartridge.model().getBody().getMass() * 20;
+		Cartridge cartridge = new Cartridge(model().gameWorld(), model().body().getWorldCenter());
+		float impulse = cartridge.model().body().getMass() * 20;
 		if (isMovingLeft()) {
-			cartridge.model().getBody().applyLinearImpulse(new Vec2(impulse/-1, 0), model().getBody().getWorldCenter());
+			cartridge.model().body().applyLinearImpulse(new Vec2(impulse/-1, 0), model().body().getWorldCenter());
 		}
 		if (isMovingRight()) {
-			cartridge.model().getBody().applyLinearImpulse(new Vec2(impulse, 0), model().getBody().getWorldCenter());
+			cartridge.model().body().applyLinearImpulse(new Vec2(impulse, 0), model().body().getWorldCenter());
 		}
-		model().getGameWorld().add((DynamicActor)cartridge);
+		model().gameWorld().add((DynamicActor)cartridge);
 	}
 
 	@Override
