@@ -41,9 +41,9 @@ public class WildJoe implements Game {
 					new ResourceCallback<GameWorld>() {
 						@Override
 						public void error(Throwable err) {
-							if (err instanceof FileNotFoundException) {
+//							if (err instanceof FileNotFoundException) {
 								gameWorld.gameOver();
-							}
+//							}
 							loader.stop();
 						}
 			
