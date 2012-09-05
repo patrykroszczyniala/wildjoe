@@ -46,6 +46,7 @@ public class MenuView extends StaticView {
                 start,
                 new Shim(10, 20),
                 exit));
+		PlayN.log().debug(start.size().toString());
 		start.setStyles(Style.BACKGROUND.is(Background.blank()));
 		exit.setStyles(Style.BACKGROUND.is(Background.blank()));
 		

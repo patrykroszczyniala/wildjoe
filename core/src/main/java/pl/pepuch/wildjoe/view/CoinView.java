@@ -7,9 +7,9 @@ import playn.core.Image;
 
 public class CoinView extends DynamicView {
 	
-	public CoinView(CoinModel block) {
+	public CoinView(CoinModel block, Image image) {
 		super(block);
-		Image image = assets().getImage("images/coin.png");
+//		Image image = assets().getImage("images/coin.png");
 		addLayer(graphics().createImageLayer(image));
 	}
 	

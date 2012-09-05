@@ -19,9 +19,7 @@ public class Menu extends StaticActor {
 		view().exit().clicked().connect(new UnitSlot() {
 			@Override
 			public void onEmit() {
-				System.out.println("EXIT");
-				// TODO destroy!!
-				//System.exit(0); // doesn't work for GWT
+				System.exit(0); // doesn't work for GWT
 			}
 		});
 		view().start().clicked().connect(new UnitSlot() {

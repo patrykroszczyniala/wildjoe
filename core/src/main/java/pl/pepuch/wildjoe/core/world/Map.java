@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.jbox2d.common.Vec2;
 
+import pl.pepuch.wildjoe.controller.ActorFactory;
 import pl.pepuch.wildjoe.controller.Block;
 import pl.pepuch.wildjoe.controller.Coin;
 import pl.pepuch.wildjoe.controller.DynamicActor;
@@ -11,17 +12,12 @@ import pl.pepuch.wildjoe.controller.FinishFlag;
 import pl.pepuch.wildjoe.controller.Mummy;
 import pl.pepuch.wildjoe.controller.Wall;
 import playn.core.AssetWatcher;
+import playn.core.Image;
 import playn.core.Json;
 import playn.core.PlayN;
 import playn.core.ResourceCallback;
 
 public class Map {
-	
-	public static final String BLOCK_NORMAL = "Block";
-	public static final String PLAYER_NORMAL = "Player";
-	public static final String FINISH_FLAG = "FinishFlag";
-	public static final String MUMMY = "Mummy";
-	public static final String PRIZE_COIN = "Coin";
 	
 	public static void load(final GameWorld gameWorld, int level, final ResourceCallback<GameWorld> callback) {
 		
@@ -50,6 +46,8 @@ public class Map {
 				Json.Object json = PlayN.json().parse(resource);
 				Json.Array entities = json.getArray("Entities");
 				
+				Image blockImage = PlayN.assets().getImage("images/block.png");
+				Image coinImage = PlayN.assets().getImage("images/coin.png");
 				for (int i=0; i<entities.length(); i++) {
 					Json.Object jsonEntity = entities.getObject(i);
 					String type = jsonEntity.getString("type");
@@ -57,19 +55,19 @@ public class Map {
 					float y = jsonEntity.getNumber("y");
 
 					DynamicActor block = null;
-					if (type.equalsIgnoreCase(Map.BLOCK_NORMAL)) {
-						block = new Block(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
+					if (type.equalsIgnoreCase(ActorFactory.BLOCK)) {
+						block = new Block(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y), blockImage);
 					}
-					else if (type.equalsIgnoreCase(Map.PRIZE_COIN)) {
-						block = new Coin(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
+					else if (type.equalsIgnoreCase(ActorFactory.COIN)) {
+						block = new Coin(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y), coinImage);
 					}
-					else if (type.equalsIgnoreCase(Map.FINISH_FLAG)) {
+					else if (type.equalsIgnoreCase(ActorFactory.FINISH_FLAG)) {
 						block = new FinishFlag(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
-					else if (type.equalsIgnoreCase(Map.MUMMY)) {
+					else if (type.equalsIgnoreCase(ActorFactory.MUMMY)) {
 						block = new Mummy(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
-					else if (type.equalsIgnoreCase(Map.PLAYER_NORMAL)) {
+					else if (type.equalsIgnoreCase(ActorFactory.PLAYER)) {
 						gameWorld.player().model().setPosition(new Vec2(1.0f, 0.0f));
 					}
 					if (block!=null) {
@@ -85,11 +83,11 @@ public class Map {
 				gameWorld.add(new Wall(gameWorld, new Vec2(gameWorld.getWorldWidth(), -2.0f)));
 				// add blocks before start wall
 				for (int i=1; i<10; i++) {
-					gameWorld.add(new Block(gameWorld, new Vec2(i*(-1), gameWorld.getWorldHeight()-1)));
+					gameWorld.add(new Block(gameWorld, new Vec2(i*(-1), gameWorld.getWorldHeight()-1), blockImage));
 				}
 				// add blocks after end wall
 				for (int i=0; i<10; i++) {
-					gameWorld.add(new Block(gameWorld, new Vec2(gameWorld.getWorldWidth()+i, gameWorld.getWorldHeight()-1)));
+					gameWorld.add(new Block(gameWorld, new Vec2(gameWorld.getWorldWidth()+i, gameWorld.getWorldHeight()-1), blockImage));
 				}
 				
 				// find boundary blocks

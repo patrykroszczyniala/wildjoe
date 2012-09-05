@@ -5,12 +5,13 @@ import org.jbox2d.common.Vec2;
 import pl.pepuch.wildjoe.core.world.GameWorld;
 import pl.pepuch.wildjoe.model.BlockModel;
 import pl.pepuch.wildjoe.view.BlockView;
+import playn.core.Image;
 
 public class Block extends DynamicActor {
 	
-	public Block(GameWorld world, Vec2 position) {
+	public Block(GameWorld world, Vec2 position, Image image) {
 		model = new BlockModel(world, position);
-		view = new BlockView(model());
+		view = new BlockView(model(), image);
 		model().setPosition(position);
 		model().body().setUserData(this);
 	}
