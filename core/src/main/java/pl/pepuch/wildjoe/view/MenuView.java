@@ -8,6 +8,7 @@ import tripleplay.ui.Background;
 import tripleplay.ui.Button;
 import tripleplay.ui.Group;
 import tripleplay.ui.Root;
+import tripleplay.ui.Shim;
 import tripleplay.ui.SimpleStyles;
 import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
@@ -16,6 +17,7 @@ public class MenuView extends StaticView {
 	
 	private Root root;
 	private Button start;
+	private Button scores;
 	
 	public MenuView() {
 		super();
@@ -24,9 +26,10 @@ public class MenuView extends StaticView {
 		final Image menuBgImage = AssetsFactory.getImage("images/menuBg.png");
 		final Image stoneImage = AssetsFactory.getImage("images/stone.png");
 		final Image btnStartImage = AssetsFactory.getImage("images/btnStart.png");
-		final Image btnExitImage = AssetsFactory.getImage("images/btnExit.png");
+		final Image btnScoresImage = AssetsFactory.getImage("images/btnScores.png");
 		
 		start = new Button();
+		scores = new Button();
 		
 		AssetWatcher assetWatcher = new AssetWatcher(new AssetWatcher.Listener() {
 
@@ -49,9 +52,13 @@ public class MenuView extends StaticView {
 				root.addStyles(Style.VALIGN.center);
 				root.setSize(PlayN.graphics().width(), PlayN.graphics().height());
 				start.icon.update(btnStartImage);
+				scores.icon.update(btnScoresImage);
 				root.add(new Group(AxisLayout.vertical(), Style.HALIGN.center, Style.BACKGROUND.is(Background.blank())).add(
-		                start));
+		                start,
+		                new Shim(10, 20),
+		                scores));
 				start.setStyles(Style.BACKGROUND.is(Background.blank()));
+				scores.setStyles(Style.BACKGROUND.is(Background.blank()));
 				
 				root.layer.setDepth(0);
 				addLayer(root.layer);
@@ -67,7 +74,7 @@ public class MenuView extends StaticView {
 		assetWatcher.add(menuBgImage);
 		assetWatcher.add(stoneImage);
 		assetWatcher.add(btnStartImage);
-		assetWatcher.add(btnExitImage);
+		assetWatcher.add(btnScoresImage);
 		assetWatcher.start();
 	}
 
@@ -75,10 +82,15 @@ public class MenuView extends StaticView {
 		return start;
 	}
 	
+	public Button scores() {
+		return scores;
+	}
+	
 	public void destroy() {
 		super.destroy();
 		root.destroyAll();
 		start = null;
+		scores = null;
 	}
 
 }

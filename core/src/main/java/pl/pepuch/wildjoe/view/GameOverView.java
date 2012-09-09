@@ -7,6 +7,7 @@ import playn.core.Image;
 import playn.core.PlayN;
 import tripleplay.ui.Background;
 import tripleplay.ui.Button;
+import tripleplay.ui.Field;
 import tripleplay.ui.Group;
 import tripleplay.ui.Label;
 import tripleplay.ui.Root;
@@ -18,12 +19,14 @@ public class GameOverView extends StaticView {
 	
 	private Button btnContinue;
 	private Label bonusLabel;
+	private Field nameField;
 	
 	public GameOverView(final GameOverModel model) {
 		super();
 		
 		btnContinue = new Button();
 		bonusLabel = new Label();
+		nameField = new Field("Enter your name");
 		final Image bgImage = AssetsFactory.getImage("images/bg.png");
 		final Image gameOverImage = AssetsFactory.getImage("images/gameOver.png");
 		final Image btnContinueImage = AssetsFactory.getImage("images/btnContinue.png");
@@ -53,6 +56,7 @@ public class GameOverView extends StaticView {
 						labelGameOver,
 						model.scoreboard().view().points(),
 						bonusLabel,
+						nameField(),
 						btnContinue));
 				btnContinue.setStyles(Style.BACKGROUND.is(Background.blank()));
 				addLayer(root.layer);
@@ -71,6 +75,10 @@ public class GameOverView extends StaticView {
 
 	public Label bonusLabel() {
 		return bonusLabel;
+	}
+
+	public Field nameField() {
+		return nameField;
 	}
 
 }

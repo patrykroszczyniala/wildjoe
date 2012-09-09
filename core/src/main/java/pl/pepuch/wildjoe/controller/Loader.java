@@ -1,19 +1,25 @@
 package pl.pepuch.wildjoe.controller;
 
 import pl.pepuch.wildjoe.helpers.AssetsFactory;
+import playn.core.GroupLayer;
 import playn.core.Image;
 import playn.core.ImageLayer;
 import playn.core.PlayN;
 
 public class Loader {
 	
-	private ImageLayer layer;
-	private Image image;
+	private GroupLayer layer;
+	private Image loadingImage;
+	private Image bgImage;
 	
 	public void start() {
-		image = AssetsFactory.getImage("images/loading.png");
-		layer = PlayN.graphics().createImageLayer(image);
-		layer.setTranslation((PlayN.graphics().width()/2)-image.width()/2, (PlayN.graphics().height()/2)-image.height()/2);
+		bgImage = AssetsFactory.getImage("images/bg.png");
+		loadingImage = AssetsFactory.getImage("images/loading.png");
+		layer = PlayN.graphics().createGroupLayer();
+		layer.add(PlayN.graphics().createImageLayer(bgImage));
+		ImageLayer loadingLayer = PlayN.graphics().createImageLayer(loadingImage);
+		layer.add(loadingLayer);
+		loadingLayer.setTranslation((PlayN.graphics().width()/2)-loadingImage.width()/2, (PlayN.graphics().height()/2)-loadingImage.height()/2);
 		PlayN.graphics().rootLayer().add(layer);
 	}
 	
@@ -22,7 +28,8 @@ public class Loader {
 			@Override
 			public void run() {
 				layer.destroy();
-				image = null;
+				loadingImage = null;
+				bgImage = null;
 				layer = null;
 			}
 		});

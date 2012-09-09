@@ -1,7 +1,9 @@
+
 package pl.pepuch.wildjoe.core;
 
 import pl.pepuch.wildjoe.controller.Loader;
 import pl.pepuch.wildjoe.controller.Menu;
+import pl.pepuch.wildjoe.controller.Scores;
 import pl.pepuch.wildjoe.core.world.GameWorld;
 import playn.core.Game;
 import playn.core.PlayN;
@@ -9,10 +11,13 @@ import playn.core.ResourceCallback;
 
 public class WildJoe implements Game {
 
+//	public static String address = "http://localhost/wildjoe/";
+	public static String address = "http://proszczyniala.pl/wildjoe/action/";
 	public static float physUnitPerScreenUnit = 1/32f;
 	public static boolean debug = false;
 	private GameWorld gameWorld;
 	private Menu menu;
+	private Scores scores;
 	
 	@Override
 	/**
@@ -22,6 +27,8 @@ public class WildJoe implements Game {
 		PlayN.graphics().setSize(800, 600);
 		menu = new Menu(this);
 		menu.show();
+		scores = new Scores(this);
+		scores.hide();
 	}
 	
 	public void loadLevel(final int level) {
@@ -68,6 +75,8 @@ public class WildJoe implements Game {
 
 	@Override
 	public void paint(float alpha) {
+		scores().paint(alpha);
+		menu().paint(alpha);
 		if (gameWorld!=null) {
 			if (gameWorld.gameOver!=null) {
 				gameWorld.gameOver.paint(alpha);
@@ -76,13 +85,12 @@ public class WildJoe implements Game {
 				gameWorld.paint(alpha);
 			}
 		}
-		else {
-			menu.paint(alpha);
-		}
 	}
 
 	@Override
 	public void update(float delta) {			
+		scores().update(delta);
+		menu().update(delta);
 		if (gameWorld!=null) {
 			if (gameWorld!=null && gameWorld.gameOver!=null) {
 				gameWorld.gameOver.update(delta);
@@ -90,9 +98,6 @@ public class WildJoe implements Game {
 			else {
 				gameWorld.update(delta);
 			}
-		}
-		else {
-			menu.update(delta);
 		}
 	}
 
@@ -103,6 +108,10 @@ public class WildJoe implements Game {
 	
 	public Menu menu() {
 		return menu;
+	}
+	
+	public Scores scores() {
+		return scores;
 	}
 	
 	public void setGameWorld(GameWorld gameWorld) {

@@ -1,9 +1,11 @@
 package pl.pepuch.wildjoe.controller;
 
+import pl.pepuch.wildjoe.core.WildJoe;
 import pl.pepuch.wildjoe.core.world.GameWorld;
 import pl.pepuch.wildjoe.model.GameOverModel;
 import pl.pepuch.wildjoe.view.GameOverView;
 import playn.core.PlayN;
+import playn.core.util.Callback;
 import react.UnitSlot;
 
 
@@ -21,16 +23,28 @@ public class GameOver extends StaticActor {
 		view().layer().setDepth(5);
 		PlayN.graphics().rootLayer().add(view().layer());
 		hide();
+		points = model().scoreboard().model().points();
+		pointsCounter = 0;
+		bonusCounter = 0;
+		
 		view().btnContinue().clicked().connect(new UnitSlot() {
 			@Override
 			public void onEmit() {
+				PlayN.net().get(WildJoe.address+"?action=add&name="+view().nameField().text.get()+"&score="+String.valueOf(model().scoreboard().points()), new Callback<String>() {					
+					@Override
+					public void onSuccess(String result) {
+						PlayN.log().debug("success: "+result);
+					}
+					
+					@Override
+					public void onFailure(Throwable cause) {
+						PlayN.log().debug("error: "+cause.getMessage());
+					}
+				} );
 				hide();
 				gameWorld.game().menu().show();
 			}
 		});
-		points = model().scoreboard().model().points();
-		pointsCounter = 0;
-		bonusCounter = 0;
 	}
 	
 	public void show() {

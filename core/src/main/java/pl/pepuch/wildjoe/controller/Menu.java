@@ -20,13 +20,25 @@ public class Menu extends StaticActor {
 			@Override
 			public void onEmit() {
 				PlayN.invokeLater(new Runnable() {
-					
 					@Override
 					public void run() {
 						hide();
 						game.setGameWorld(new GameWorld(game));
 						PlayN.keyboard().setListener(new WildJoeKeyboardListener(game.gameWorld()));
 						game.loadLevel(game.gameWorld().scoreboard().level());
+					}
+				});
+			}
+		});
+		view().scores().clicked().connect(new UnitSlot() {
+			@Override
+			public void onEmit() {
+				PlayN.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						PlayN.log().debug("scores");
+						hide();
+						game.scores().show();
 					}
 				});
 			}
