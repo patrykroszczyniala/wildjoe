@@ -5,15 +5,14 @@ import org.jbox2d.common.Vec2;
 import pl.pepuch.wildjoe.core.world.GameWorld;
 import pl.pepuch.wildjoe.model.CoinModel;
 import pl.pepuch.wildjoe.view.CoinView;
-import playn.core.Image;
 
 
 public class Coin extends DynamicActor {
 	
-	public Coin(GameWorld world, Vec2 position, Image image) {
+	public Coin(GameWorld world, Vec2 position) {
 		super();
 		model = new CoinModel(world, position);
-		view = new CoinView(model(), image);
+		view = new CoinView(model());
 		model().setPosition(position);
 		model().body().setUserData(this);
 	}

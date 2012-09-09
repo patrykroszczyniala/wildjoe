@@ -6,6 +6,7 @@
   <source path='controller'/>
   <source path='model'/>
   <source path='view'/>
+  <source path='helpers'/>
   
   <source path='core'/>
   <source path='html'/>

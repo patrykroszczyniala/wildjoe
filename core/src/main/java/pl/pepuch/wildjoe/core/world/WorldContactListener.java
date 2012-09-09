@@ -29,10 +29,11 @@ public class WorldContactListener implements ContactListener {
 			body1 = (DynamicActor)contact.getFixtureA().getBody().getUserData();
 		if (contact.getFixtureB().getBody().getUserData()!=null && contact.getFixtureB().getBody().getUserData() instanceof DynamicActor)
 			body2 = (DynamicActor)contact.getFixtureB().getBody().getUserData();
-		if (body1 instanceof Player && body2 instanceof Coin) {
+		if ((body1 instanceof Player && body2 instanceof Coin) || (body1 instanceof Coin && body2 instanceof Player)) {
 			// punkt!
-			gameWorld.remove(body2);
-			gameWorld.pointCounter().setPoints(gameWorld.pointCounter().getPoints()+10);
+			Coin coin = (body1 instanceof Coin) ? (Coin)body1 : (Coin)body2;
+			gameWorld.remove(coin);
+			gameWorld.scoreboard().setPoints(gameWorld.scoreboard().model().points()+10);
 		}
 		// MYMMY AI ;)
 		if ((body1 instanceof Mummy && body2 instanceof Block) || (body1 instanceof Block && body2 instanceof Mummy)) {
@@ -51,7 +52,17 @@ public class WorldContactListener implements ContactListener {
 		
 		// kill player if he touch enemy
 		if ((body1 instanceof Mummy && body2 instanceof Player) || (body1 instanceof Player && body2 instanceof Mummy)) {
-			gameWorld.gameOver();
+			if (gameWorld.scoreboard().lives()<=1) {
+				gameWorld.gameOver();
+			}
+			else {
+				PlayN.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						gameWorld.game.restartLevel();
+					}
+				});
+			}
 		}
 		// game finished or next level
 		if ((body1 instanceof FinishFlag && body2 instanceof Player) || (body1 instanceof Player && body2 instanceof FinishFlag)) {

@@ -12,7 +12,6 @@ import pl.pepuch.wildjoe.controller.FinishFlag;
 import pl.pepuch.wildjoe.controller.Mummy;
 import pl.pepuch.wildjoe.controller.Wall;
 import playn.core.AssetWatcher;
-import playn.core.Image;
 import playn.core.Json;
 import playn.core.PlayN;
 import playn.core.ResourceCallback;
@@ -46,8 +45,6 @@ public class Map {
 				Json.Object json = PlayN.json().parse(resource);
 				Json.Array entities = json.getArray("Entities");
 				
-				Image blockImage = PlayN.assets().getImage("images/block.png");
-				Image coinImage = PlayN.assets().getImage("images/coin.png");
 				for (int i=0; i<entities.length(); i++) {
 					Json.Object jsonEntity = entities.getObject(i);
 					String type = jsonEntity.getString("type");
@@ -56,10 +53,10 @@ public class Map {
 
 					DynamicActor block = null;
 					if (type.equalsIgnoreCase(ActorFactory.BLOCK)) {
-						block = new Block(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y), blockImage);
+						block = new Block(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
 					else if (type.equalsIgnoreCase(ActorFactory.COIN)) {
-						block = new Coin(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y), coinImage);
+						block = new Coin(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
 					}
 					else if (type.equalsIgnoreCase(ActorFactory.FINISH_FLAG)) {
 						block = new FinishFlag(gameWorld, new Vec2(x, gameWorld.getWorldHeight()-1-y));
@@ -83,11 +80,11 @@ public class Map {
 				gameWorld.add(new Wall(gameWorld, new Vec2(gameWorld.getWorldWidth(), -2.0f)));
 				// add blocks before start wall
 				for (int i=1; i<10; i++) {
-					gameWorld.add(new Block(gameWorld, new Vec2(i*(-1), gameWorld.getWorldHeight()-1), blockImage));
+					gameWorld.add(new Block(gameWorld, new Vec2(i*(-1), gameWorld.getWorldHeight()-1)));
 				}
 				// add blocks after end wall
 				for (int i=0; i<10; i++) {
-					gameWorld.add(new Block(gameWorld, new Vec2(gameWorld.getWorldWidth()+i, gameWorld.getWorldHeight()-1), blockImage));
+					gameWorld.add(new Block(gameWorld, new Vec2(gameWorld.getWorldWidth()+i, gameWorld.getWorldHeight()-1)));
 				}
 				
 				// find boundary blocks

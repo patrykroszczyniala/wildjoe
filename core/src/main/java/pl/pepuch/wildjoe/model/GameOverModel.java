@@ -1,23 +1,33 @@
 package pl.pepuch.wildjoe.model;
 
-import pl.pepuch.wildjoe.core.world.PointCounter;
-
+import pl.pepuch.wildjoe.controller.Scoreboard;
+import pl.pepuch.wildjoe.helpers.Math;
 
 public class GameOverModel extends StaticModel {
 	
-	private PointCounter pointCounter;
+	private Scoreboard scoreboard;
+	private int bonus;
 	
-	public GameOverModel(PointCounter pointCounter) {
-		this.pointCounter = pointCounter;
+	public GameOverModel(Scoreboard scoreboard) {
+		this.scoreboard = scoreboard;
+		this.bonus = (Math.factorial(scoreboard.lives()) * 100) + (scoreboard.level()*10);
 	}
 	
-	public PointCounter pointCounter() {
-		return pointCounter;
+	public Scoreboard scoreboard() {
+		return scoreboard;
 	}
 	
 	public void destroy() {
 		super.destroy();
-		pointCounter.destroy();
+		scoreboard.destroy();
+	}
+
+	public int bonus() {
+		return bonus;
+	}
+
+	public void setBonus(int bonus) {
+		this.bonus = bonus;
 	}
 	
 }

@@ -1,7 +1,5 @@
 package pl.pepuch.wildjoe.view;
 
-import static playn.core.PlayN.graphics;
-
 import java.util.ArrayList;
 
 import playn.core.GroupLayer;
@@ -22,8 +20,8 @@ public abstract class StaticView extends UIAnimScreen {
 	}
 	
 	public Layer addLayerAt(Image image, float x, float y) {
-		GroupLayer layer = graphics().createGroupLayer();
-		layer.addAt(graphics().createImageLayer(image), x, y);
+		GroupLayer layer = PlayN.graphics().createGroupLayer();
+		layer.addAt(PlayN.graphics().createImageLayer(image), x, y);
 		addLayer(layer);
 		
 		return layer;
@@ -36,6 +34,7 @@ public abstract class StaticView extends UIAnimScreen {
 	
 	public void addLayerAt(Layer layer, float x, float y) {
 		this.layer.addAt(layer, x, y);
+		layers.add(layer);
 	}
 	
 	public Layer layer() {

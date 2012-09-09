@@ -14,6 +14,7 @@ import pl.pepuch.wildjoe.controller.Background;
 import pl.pepuch.wildjoe.controller.DynamicActor;
 import pl.pepuch.wildjoe.controller.GameOver;
 import pl.pepuch.wildjoe.controller.Player;
+import pl.pepuch.wildjoe.controller.Scoreboard;
 import pl.pepuch.wildjoe.core.WildJoe;
 import playn.core.CanvasImage;
 import playn.core.DebugDrawBox2D;
@@ -36,7 +37,7 @@ public class GameWorld {
 	private float worldWidth;
 	public WildJoe game;
 	private Player player;
-	private PointCounter pointCounter;
+	private Scoreboard scoreboard;
 	public GameOver gameOver;
 
 	public GameWorld(WildJoe game) {
@@ -51,9 +52,9 @@ public class GameWorld {
 	    }
 
 		// tablica wynikow
-		pointCounter = new PointCounter();
-		PlayN.graphics().rootLayer().addAt(pointCounter.getLayer(), 10, 10);
-		pointCounter.setVisible(false);
+		scoreboard = new Scoreboard();
+		PlayN.graphics().rootLayer().addAt(scoreboard.view().layer(), 0, 0);
+		scoreboard.setVisible(false);
 		// zawodnik
 		player = new Player(this, new Vec2(1.0f, 0.0f));
 		PlayN.graphics().rootLayer().add(player.view().layer());
@@ -69,7 +70,7 @@ public class GameWorld {
 	public void init() {
 		player.setVisible(true);
         background.setVisible(true);
-		pointCounter.setVisible(true);
+		scoreboard.setVisible(true);
 		// set world contact listener
 		world.setContactListener(new WorldContactListener(this));
 		// reset world width
@@ -89,7 +90,7 @@ public class GameWorld {
 		    body.paint(alpha);
 		}
 		
-		pointCounter.getIface().paint(alpha);
+		scoreboard.paint(alpha);
 		player.paint(alpha);
 	}
 	
@@ -131,9 +132,7 @@ public class GameWorld {
 			body.update(delta);
 		}
 		player.update(delta);
-		pointCounter.getIface().update(delta);
-		
-		
+		scoreboard.update(delta);
 	}
 	
 	private void enableDebug() {
@@ -211,7 +210,6 @@ public class GameWorld {
 			@Override
 			public void run() {
 				destroy();
-				game.setLevel(1);
 			}
 		});
 	}
@@ -221,21 +219,27 @@ public class GameWorld {
 		player.setVisible(false);
 		background.destroy();
 		background = new Background(this, new Vec2(0.0f, 0.0f));
-        PlayN.graphics().rootLayer().add(background.view().layer());
-		background.setVisible(false);
-		pointCounter.setVisible(false);
-		for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
-			DynamicActor body = actor.next();
-			body.destroy();
-		}
-		gameBodyList.clear();
+		
+		PlayN.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+		        PlayN.graphics().rootLayer().add(background.view().layer());
+				background.setVisible(false);
+				scoreboard.setVisible(false);
+				for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
+					DynamicActor body = actor.next();
+					body.destroy();
+				}
+				gameBodyList.clear();
+			}
+		});
 	}
 	
 	public void destroy() {
 		player.die();
 		player = null;
-		pointCounter.destroy();
-		pointCounter = null;
+		scoreboard.destroy();
+		scoreboard = null;
 		background.destroy();
 		background = null;
 		
@@ -254,8 +258,8 @@ public class GameWorld {
 		return player;
 	}
 	
-	public PointCounter pointCounter() {
-		return pointCounter;
+	public Scoreboard scoreboard() {
+		return scoreboard;
 	}
 	
 	public World world() {

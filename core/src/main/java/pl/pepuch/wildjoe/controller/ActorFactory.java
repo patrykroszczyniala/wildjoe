@@ -1,10 +1,6 @@
 package pl.pepuch.wildjoe.controller;
 
-import org.jbox2d.common.Vec2;
-
 import pl.pepuch.wildjoe.core.world.GameWorld;
-import playn.core.Image;
-import playn.core.PlayN;
 
 public class ActorFactory {
 

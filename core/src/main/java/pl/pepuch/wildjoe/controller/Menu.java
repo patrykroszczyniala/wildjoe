@@ -16,12 +16,6 @@ public class Menu extends StaticActor {
 		PlayN.graphics().rootLayer().add(view().layer());
 		hide();
 		
-		view().exit().clicked().connect(new UnitSlot() {
-			@Override
-			public void onEmit() {
-//				System.exit(0); // doesn't work for GWT
-			}
-		});
 		view().start().clicked().connect(new UnitSlot() {
 			@Override
 			public void onEmit() {
@@ -32,7 +26,7 @@ public class Menu extends StaticActor {
 						hide();
 						game.setGameWorld(new GameWorld(game));
 						PlayN.keyboard().setListener(new WildJoeKeyboardListener(game.gameWorld()));
-						game.loadLevel(game.level());
+						game.loadLevel(game.gameWorld().scoreboard().level());
 					}
 				});
 			}

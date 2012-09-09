@@ -1,8 +1,8 @@
 package pl.pepuch.wildjoe.view;
 
+import pl.pepuch.wildjoe.helpers.AssetsFactory;
 import pl.pepuch.wildjoe.model.PlayerModel;
 import playn.core.Image;
-import playn.core.PlayN;
 
 public class PlayerView extends DynamicView {
 	
@@ -13,9 +13,9 @@ public class PlayerView extends DynamicView {
 	public PlayerView(PlayerModel player) {
 		super(player);
 		
-		Image imageRunLeft = PlayN.assets().getImage("images/runLeft.png");
-		Image imageRunRight = PlayN.assets().getImage("images/runRight.png");
-		Image imageIdle = PlayN.assets().getImage("images/idle.png");
+		Image imageRunLeft = AssetsFactory.getImage("images/runLeft.png");
+		Image imageRunRight = AssetsFactory.getImage("images/runRight.png");
+		Image imageIdle = AssetsFactory.getImage("images/idle.png");
 
 		int size = 64;
 		animationRight = new Animation(imageRunRight, size, size, 10, 66);

@@ -10,10 +10,13 @@ import react.UnitSlot;
 public class GameOver extends StaticActor {
 	
 	private int points;
-	private int counter;
+	private int pointsCounter;
+	private int bonusCounter;
+	private boolean bonusAdded;
 	
 	public GameOver(final GameWorld gameWorld) {
-		model = new GameOverModel(gameWorld.pointCounter().clone());
+		bonusAdded = false;
+		model = new GameOverModel(gameWorld.scoreboard().clone());
 		view = new GameOverView(model());
 		view().layer().setDepth(5);
 		PlayN.graphics().rootLayer().add(view().layer());
@@ -25,8 +28,9 @@ public class GameOver extends StaticActor {
 				gameWorld.game().menu().show();
 			}
 		});
-		points = model().pointCounter().getPoints();
-		counter = 0;
+		points = model().scoreboard().model().points();
+		pointsCounter = 0;
+		bonusCounter = 0;
 	}
 	
 	public void show() {
@@ -54,25 +58,45 @@ public class GameOver extends StaticActor {
 	
 	public void paint(float alpha) {
 		super.paint(alpha);
-		model().pointCounter().getIface().paint(alpha);
+		model().scoreboard().paint(alpha);
 	}
 	
 	public void update(float delta) {
 		super.update(delta);
-		if (counter<points) {
-			if (counter<50 || (points-counter)<100) {
-				counter++;
+		if (pointsCounter<points) {
+			if (points-pointsCounter>100) {
+				pointsCounter += 100;
 			}
-			else if (counter>=50 && counter<500) {
-				counter += 10;
+			else if (points-pointsCounter>10) {
+				pointsCounter += 10;
 			}
 			else {
-				counter += 100;
+				pointsCounter++;
 			}
 		}
+		else if (bonusCounter<model().bonus()) {
+			if (!view().bonusLabel().isVisible()) {
+				view().bonusLabel().setVisible(true);
+			}
+			if (model().bonus()-bonusCounter>100) {
+				bonusCounter += 100;
+			}
+			else if (model().bonus()-bonusCounter>10) {
+				bonusCounter += 10;
+			}
+			else {
+				bonusCounter++;
+			}
+			bonusAdded = true;
+		}
+		else if(bonusAdded) {
+			points += model().bonus();
+			bonusAdded = false;
+		}
 		
-		model().pointCounter().getIface().update(delta);
-		model().pointCounter().setPoints(counter);
+		model().scoreboard().update(delta);
+		model().scoreboard().setPoints(pointsCounter);
+		view().bonusLabel().text.update(String.valueOf(bonusCounter));
 	}
 		
 }

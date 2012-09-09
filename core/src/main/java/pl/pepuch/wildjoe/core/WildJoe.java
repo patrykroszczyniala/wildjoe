@@ -1,7 +1,5 @@
 package pl.pepuch.wildjoe.core;
 
-import java.io.FileNotFoundException;
-
 import pl.pepuch.wildjoe.controller.Loader;
 import pl.pepuch.wildjoe.controller.Menu;
 import pl.pepuch.wildjoe.core.world.GameWorld;
@@ -15,7 +13,6 @@ public class WildJoe implements Game {
 	public static boolean debug = false;
 	private GameWorld gameWorld;
 	private Menu menu;
-	private int level;
 	
 	@Override
 	/**
@@ -23,7 +20,6 @@ public class WildJoe implements Game {
 	 */
 	public void init() {
 		PlayN.graphics().setSize(800, 600);
-		setLevel(1);
 		menu = new Menu(this);
 		menu.show();
 	}
@@ -61,8 +57,13 @@ public class WildJoe implements Game {
 	}
 	
 	public void nextLevel() {
-		level++;
-		loadLevel(level);
+		gameWorld().scoreboard().setLevel(gameWorld().scoreboard().level() + 1);
+		loadLevel(gameWorld().scoreboard().level());
+	}
+	
+	public void restartLevel() {
+		gameWorld().scoreboard().setLives(gameWorld().scoreboard().lives()-1);
+		loadLevel(gameWorld().scoreboard().level());
 	}
 
 	@Override
@@ -104,10 +105,6 @@ public class WildJoe implements Game {
 		return menu;
 	}
 	
-	public void setLevel(int level) {
-		this.level = level;
-	}
-	
 	public void setGameWorld(GameWorld gameWorld) {
 		this.gameWorld = gameWorld;
 	}
@@ -115,9 +112,5 @@ public class WildJoe implements Game {
 	public GameWorld gameWorld() {
 		return gameWorld;
 	}
-	
-	public int level() {
-		return level;
-	}
-	
+		
 }
