@@ -158,6 +158,7 @@ public class GameWorld {
 	}
 	
 	public void remove(final DynamicActor gameBody) {
+		gameBody.model().body().setActive(false); // inactive body will not collide
 		PlayN.invokeLater(new Runnable() {
 			@Override
 			public void run() {
