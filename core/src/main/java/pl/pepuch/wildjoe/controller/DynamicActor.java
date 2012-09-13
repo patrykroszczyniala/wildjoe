@@ -1,5 +1,7 @@
 package pl.pepuch.wildjoe.controller;
 
+import java.math.BigDecimal;
+
 import org.jbox2d.common.Vec2;
 
 import pl.pepuch.wildjoe.model.DynamicModel;
@@ -28,7 +30,8 @@ public abstract class DynamicActor {
 	public void jump() {
 		if (!isJumping()) {
 			float impulse = model().body().getMass() * 80;
-			model().body().applyLinearImpulse(new Vec2(0, impulse), model().body().getWorldCenter());
+			System.out.println(new Vec2(model().body().getPosition().x, impulse)+" / "+model().body().getWorldCenter());
+			model().body().applyLinearImpulse(new Vec2(model().body().getPosition().x, impulse), model().body().getWorldCenter());
 		}
 	}
 	
@@ -55,7 +58,8 @@ public abstract class DynamicActor {
 	}
 	
 	public boolean isJumping() {
-		return (int)model().body().getLinearVelocity().y!=0 ? true : false;
+		float y = BigDecimal.valueOf(model().body().getLinearVelocity().y).setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+		return y!=0 ? true : false;
 	}
 	
 	public void destroy() {
