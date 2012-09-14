@@ -1,6 +1,6 @@
 package pl.pepuch.wildjoe.model;
 
-import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -11,25 +11,22 @@ import pl.pepuch.wildjoe.core.world.GameWorld;
 
 public class CoinModel extends DynamicModel {
 	
+	CircleShape shape;
+	
 	public CoinModel(GameWorld world, Vec2 position) {
 		super(world, position);
+		position.set(new Vec2(position.x+0.5f, position.y+0.5f));
 	}
 	
 	@Override
 	protected Body createBody(GameWorld world) {
-		width = 1.0f;
-		height = 1.0f;
-		
+		float radius = 0.2f;
 		bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.KINEMATIC;
-	    PolygonShape shape = new PolygonShape();
-	    Vec2[] polygon = new Vec2[4];
-	    polygon[0] = new Vec2(0, 0);
-	    polygon[1] = new Vec2(width, 0);
-		polygon[2] = new Vec2(width, height);
-		polygon[3] = new Vec2(0, height);
-		shape.set(polygon, polygon.length);
-		fixtureDef = new FixtureDef();
+	    shape = new CircleShape();
+	    shape.m_radius = radius;
+
+	    fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 0.0f;
 		fixtureDef.restitution = 0.0f;
@@ -41,5 +38,15 @@ public class CoinModel extends DynamicModel {
 		
 		return body;
 	}
-
+	
+	public void setRadius(float radius) {
+		if (body!=null) {
+			body.getFixtureList().m_shape.m_radius = radius;
+		}
+	}
+	
+	public float radius() {
+		return body.getFixtureList().m_shape.m_radius;
+	}
+	
 }
