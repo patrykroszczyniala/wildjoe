@@ -8,6 +8,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 import pl.pepuch.wildjoe.core.world.GameWorld;
+import playn.core.PlayN;
 
 public class CoinModel extends DynamicModel {
 	
@@ -20,11 +21,10 @@ public class CoinModel extends DynamicModel {
 	
 	@Override
 	protected Body createBody(GameWorld world) {
-		float radius = 0.2f;
 		bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.KINEMATIC;
 	    shape = new CircleShape();
-	    shape.m_radius = radius;
+	    shape.m_radius = 0.2f;
 
 	    fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
@@ -39,14 +39,19 @@ public class CoinModel extends DynamicModel {
 		return body;
 	}
 	
-	public void setRadius(float radius) {
-		if (body!=null) {
-			body.getFixtureList().m_shape.m_radius = radius;
+	public void setRadius(final float radius) {
+		if (shape!=null) {
+			PlayN.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					shape.m_radius = radius;					
+				}
+			});
 		}
 	}
 	
 	public float radius() {
-		return body.getFixtureList().m_shape.m_radius;
+		return shape.m_radius;
 	}
 	
 }
