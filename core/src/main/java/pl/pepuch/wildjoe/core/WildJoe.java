@@ -5,6 +5,8 @@ import pl.pepuch.wildjoe.controller.Loader;
 import pl.pepuch.wildjoe.controller.Menu;
 import pl.pepuch.wildjoe.controller.Scores;
 import pl.pepuch.wildjoe.core.world.GameWorld;
+import pl.pepuch.wildjoe.helpers.AssetsFactory;
+import playn.core.AssetWatcher;
 import playn.core.Game;
 import playn.core.PlayN;
 import playn.core.ResourceCallback;
@@ -20,15 +22,24 @@ public class WildJoe implements Game {
 	private Scores scores;
 	
 	@Override
-	/**
-	 * ekran powitalny z menu wywolywany po wlaczeniu gry albo po gameover
-	 */
 	public void init() {
-		PlayN.graphics().setSize(800, 600);
+		PlayN.graphics().setSize(800, 500);
+		final Loader loader = new Loader();
+		loader.start();
 		menu = new Menu(this);
-		menu.show();
-		scores = new Scores(this);
-		scores.hide();
+		scores = new Scores(this);		
+		// load assets
+		AssetsFactory.init(new AssetWatcher.Listener() {
+			@Override
+			public void error(Throwable e) {
+			}
+			@Override
+			public void done() {
+				menu.show();
+				scores.hide();
+				loader.stop();
+			}
+		});
 	}
 	
 	public void loadLevel(final int level) {
@@ -44,6 +55,7 @@ public class WildJoe implements Game {
 					new ResourceCallback<GameWorld>() {
 						@Override
 						public void error(Throwable err) {
+							err.printStackTrace();
 //							if (err instanceof FileNotFoundException) {
 								gameWorld.gameOver();
 //							}

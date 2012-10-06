@@ -20,24 +20,23 @@ public class MummyModel extends DynamicModel {
 	private Vec2 aabbP2;
 	
 	public MummyModel(GameWorld world, Vec2 position) {
-		super(world, position);
+		super(world);
+		setSpeed(0.1f);
+		setWidth(1f);
+		setHeight(1.96f);
+		body = createBody(world);
+		setPosition(position);
+		origin = body.getPosition().clone();
 	}
 	
-	public Body createBody(GameWorld world) {
-		width = 1.0f;
-		height = 1.96f;
-		
-		bodyDef = new BodyDef();
+	protected Body createBody(GameWorld world) {
+		BodyDef bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.DYNAMIC;
+
 	    PolygonShape shape = new PolygonShape();
-	    Vec2[] polygon = new Vec2[4];
-	    polygon[0] = new Vec2(0, 0);
-	    polygon[1] = new Vec2(width, 0);
-		polygon[2] = new Vec2(width, height);
-		polygon[3] = new Vec2(0, height);
-		shape.set(polygon, polygon.length);
-		
-	    fixtureDef = new FixtureDef();
+	    shape.setAsBox(width/2, height/2, new Vec2(0,0), 0);
+	    
+	    FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.1f;
@@ -47,7 +46,7 @@ public class MummyModel extends DynamicModel {
 		body.createFixture(fixtureDef);
 		// body will be active all the time
 		body.setSleepingAllowed(false);
-		body.setAwake(false);
+		body.setActive(true);
 		// wake up body
 		body.applyForce(body.getLocalCenter(), body.getLocalCenter());
 		// player will not change his angle !
@@ -62,16 +61,17 @@ public class MummyModel extends DynamicModel {
 	}
 	
 	public void queryAABB(Vec2 p1, Vec2 p2) {
-		aabbP1 = p1;
-		aabbP2 = p2;
-		aabb.lowerBound.set(aabbP1);
-		aabb.upperBound.set(aabbP2);
-		body().getWorld().queryAABB(queryCallback, aabb);
-		
+		if (aabb!=null) {
+			aabbP1 = p1;
+			aabbP2 = p2;
+			aabb.lowerBound.set(aabbP1);
+			aabb.upperBound.set(aabbP2);
+			body().getWorld().queryAABB(queryCallback, aabb);
+		}
 	}
 	
 	public void drawDebugData() {
-		if (world.debugDraw!=null && aabbP1!=null && aabbP2!=null) {
+		if (world.debugDraw!=null && aabb!=null && aabbP1!=null && aabbP2!=null) {
 			Vec2[] vertices = new Vec2[4];
 			vertices[0] = new Vec2(aabbP1.x, aabbP1.y);
 			vertices[1] = new Vec2(aabbP2.x, aabbP1.y);
@@ -81,12 +81,13 @@ public class MummyModel extends DynamicModel {
 		}
 	}
 	
+	@Override
 	public void destroy() {
 		super.destroy();
 		aabb = null;
-		queryCallback = null;
 		aabbP1 = null;
-		aabbP2 = null;
+		aabbP1 = null;
+		queryCallback = null;
 	}
-	
+
 }

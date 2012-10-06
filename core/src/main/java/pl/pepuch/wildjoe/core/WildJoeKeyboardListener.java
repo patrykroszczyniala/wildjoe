@@ -20,13 +20,19 @@ public class WildJoeKeyboardListener implements Listener {
 	@Override
 	public void onKeyDown(Event event) {
 		if (event.key().name().equalsIgnoreCase(Key.RIGHT.name())) {
-			player.isMovingRight(true);
+			player.turnRight();
+			player.go();
 		}
 		else if (event.key().name().equalsIgnoreCase(Key.LEFT.name())) {
-			player.isMovingLeft(true);
+			player.turnLeft();
+			player.go();
 		}
-		else if (event.key().name().equalsIgnoreCase(Key.UP.name())) {
+		if (event.key().name().equalsIgnoreCase(Key.UP.name())) {
 			player.jump();
+//			player.go();
+		}
+		if (event.key().name().equalsIgnoreCase(Key.SPACE.name())) {
+			player.shoot();
 		}
 	}
 
@@ -37,11 +43,8 @@ public class WildJoeKeyboardListener implements Listener {
 
 	@Override
 	public void onKeyUp(Event event) {
-		if (event.key().name().equalsIgnoreCase(Key.RIGHT.name())) {
-			player.isMovingRight(false);
-		}
-		else if (event.key().name().equalsIgnoreCase(Key.LEFT.name())) {
-			player.isMovingLeft(false);
+		if (event.key().name().equalsIgnoreCase(Key.RIGHT.name()) || event.key().name().equalsIgnoreCase(Key.LEFT.name())) {
+			player.stop();
 		}
 	}
 

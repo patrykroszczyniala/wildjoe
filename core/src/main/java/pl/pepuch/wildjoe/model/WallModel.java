@@ -7,31 +7,34 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-import pl.pepuch.wildjoe.core.WildJoe;
 import pl.pepuch.wildjoe.core.world.GameWorld;
-import playn.core.PlayN;
 
 public class WallModel extends DynamicModel {
 	
 	public WallModel(GameWorld world, Vec2 position) {
-		super(world, position);
+		super(world);
+		setWidth(0.1f);
+		setHeight(world.getWorldHeight()+1);
+		setSpeed(0.1f);
+		body = createBody(world);
+		setPosition(position);
+		origin = body.getPosition().clone();
 	}
 	
 	@Override
 	protected Body createBody(GameWorld world) {
-		width = 2.0f;
-		height = PlayN.graphics().height()*WildJoe.physUnitPerScreenUnit*1.5f;
-		
-		bodyDef = new BodyDef();
+		BodyDef bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.STATIC;
-	    PolygonShape shape = new PolygonShape();
-	    Vec2[] polygon = new Vec2[4];
-	    polygon[0] = new Vec2(0, 0);
-	    polygon[1] = new Vec2(width, 0);
+
+		PolygonShape shape = new PolygonShape();
+		Vec2[] polygon = new Vec2[4];
+		polygon[0] = new Vec2(0, 0);
+		polygon[1] = new Vec2(width, 0);
 		polygon[2] = new Vec2(width, height);
 		polygon[3] = new Vec2(0, height);
 		shape.set(polygon, polygon.length);
-		fixtureDef = new FixtureDef();
+		
+		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.0f;

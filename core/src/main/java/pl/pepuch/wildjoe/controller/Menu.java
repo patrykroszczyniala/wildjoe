@@ -1,7 +1,6 @@
 package pl.pepuch.wildjoe.controller;
 
 import pl.pepuch.wildjoe.core.WildJoe;
-import pl.pepuch.wildjoe.core.WildJoeKeyboardListener;
 import pl.pepuch.wildjoe.core.world.GameWorld;
 import pl.pepuch.wildjoe.model.MenuModel;
 import pl.pepuch.wildjoe.view.MenuView;
@@ -24,7 +23,6 @@ public class Menu extends StaticActor {
 					public void run() {
 						hide();
 						game.setGameWorld(new GameWorld(game));
-						PlayN.keyboard().setListener(new WildJoeKeyboardListener(game.gameWorld()));
 						game.loadLevel(game.gameWorld().scoreboard().level());
 					}
 				});
@@ -36,7 +34,6 @@ public class Menu extends StaticActor {
 				PlayN.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						PlayN.log().debug("scores");
 						hide();
 						game.scores().show();
 					}

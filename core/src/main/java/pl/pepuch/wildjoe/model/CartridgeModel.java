@@ -11,10 +11,14 @@ import pl.pepuch.wildjoe.core.world.GameWorld;
 
 public class CartridgeModel extends DynamicModel {
 	
-	private float range;
-	
 	public CartridgeModel(GameWorld world, Vec2 position) {
-		super(world, position);
+		super(world);
+		setWidth(0.1f);
+		setHeight(0.1f);
+		setSpeed(0.1f);
+		body = createBody(world);
+		setPosition(position);
+		origin = body.getPosition().clone();
 	}
 	
 	@Override
@@ -22,12 +26,12 @@ public class CartridgeModel extends DynamicModel {
 		width = 0.05f;
 		height = 0.05f;
 		
-		bodyDef = new BodyDef();
+		BodyDef bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.DYNAMIC;
 	    CircleShape shape = new CircleShape();
 	    shape.m_radius = width;
 	    
-	    fixtureDef = new FixtureDef();
+	    FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.01f;
@@ -36,14 +40,6 @@ public class CartridgeModel extends DynamicModel {
 		body.createFixture(fixtureDef);
 	
 		return body;
-	}
-	
-	public void setRange(float range) {
-		this.range = range;
-	}
-	
-	public float range() {
-		return range;
 	}
 	
 }

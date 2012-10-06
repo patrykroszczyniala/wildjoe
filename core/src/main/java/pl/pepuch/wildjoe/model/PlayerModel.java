@@ -12,24 +12,23 @@ import pl.pepuch.wildjoe.core.world.GameWorld;
 public class PlayerModel extends DynamicModel {
 	
 	public PlayerModel(GameWorld world, Vec2 position) {
-		super(world, position);
+		super(world);
+		setWidth(1f);
+		setHeight(2f);
+		setSpeed(0.15f);
+		body = createBody(world);
+		setPosition(position);
+		origin = body.getPosition().clone();
 	}
 	
 	public Body createBody(GameWorld world) {
-		width = 1.0f;
-		height = 2.0f;
-		
-		bodyDef = new BodyDef();
+		BodyDef bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.DYNAMIC;
+
 	    PolygonShape shape = new PolygonShape();
-	    Vec2[] polygon = new Vec2[4];
-	    polygon[0] = new Vec2(0, 0);
-	    polygon[1] = new Vec2(width, 0);
-		polygon[2] = new Vec2(width, height);
-		polygon[3] = new Vec2(0, height);
-		shape.set(polygon, polygon.length);
-		
-	    fixtureDef = new FixtureDef();
+	    shape.setAsBox(width/2, height/2, new Vec2(0,0), 0);
+
+	    FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 1.0f;
 		fixtureDef.restitution = 0.1f;
@@ -45,9 +44,7 @@ public class PlayerModel extends DynamicModel {
 		// player will not change his angle !
 		body.setFixedRotation(true);
 		
-		setSpeed(0.1f);
-		
 		return body;
 	}
-	
+
 }

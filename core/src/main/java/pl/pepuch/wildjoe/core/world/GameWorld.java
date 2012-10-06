@@ -16,6 +16,7 @@ import pl.pepuch.wildjoe.controller.GameOver;
 import pl.pepuch.wildjoe.controller.Player;
 import pl.pepuch.wildjoe.controller.Scoreboard;
 import pl.pepuch.wildjoe.core.WildJoe;
+import pl.pepuch.wildjoe.core.WildJoeKeyboardListener;
 import playn.core.CanvasImage;
 import playn.core.DebugDrawBox2D;
 import playn.core.ImageLayer;
@@ -28,19 +29,23 @@ public class GameWorld {
 	// swiat Box2d
 	private World world;
 	// lista dodanych cial
-	List<DynamicActor> gameBodyList;
-	
+	List<DynamicActor> gameBodyList;	
 	// pozycja areny
 	private Vec2 arenaPosition;
-	
 	private Background background;
 	private float worldWidth;
 	public WildJoe game;
 	private Player player;
 	private Scoreboard scoreboard;
 	public GameOver gameOver;
+	
+	private float screenWidth;
+	private float screenHeight;
 
 	public GameWorld(WildJoe game) {
+		screenWidth = PlayN.graphics().width()*WildJoe.physUnitPerScreenUnit;
+		screenHeight = PlayN.graphics().height()*WildJoe.physUnitPerScreenUnit;
+		
 		gameOver = null;
 		this.game = game;
 		gameBodyList = new ArrayList<DynamicActor>();
@@ -65,6 +70,7 @@ public class GameWorld {
         player.setVisible(false);
 		// arena initial position
 		setArenaPosition(new Vec2(0.0f, 0.0f));
+		PlayN.keyboard().setListener(new WildJoeKeyboardListener(this));
 	}
 	
 	public void init() {
@@ -95,11 +101,11 @@ public class GameWorld {
 	}
 	
 	public void update(float delta) {
-		world.step(0.033f, 10, 10);
+		world.step(0.033f, 15, 15);
 		
 		float leftEnd = getScreenWidth()*0.33f-player.model().width();
 		float rightEnd = getScreenWidth()*0.66f;
-		if (player.model().position().x<leftEnd && player.isMovingLeft()) {
+		if (player.model().position().x<leftEnd && player.model().isTurnedLeft() && player.isMoving() && getArenaPositionX()<=0f) {
 			background.moveLeft();
 			for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
 				DynamicActor body = actor.next();
@@ -108,7 +114,7 @@ public class GameWorld {
 				body.model().setPosition(new Vec2(x, y));
 			}
 		}
-		else if (player.model().position().x>rightEnd && player.isMovingRight()) {
+		else if (player.model().position().x>rightEnd && player.model().isTurnedRight() && player.isMoving() && getArenaPositionX()+getWorldWidth()-2-getScreenWidth()>=0) {
 			background.moveRight();
 			for (Iterator<DynamicActor> actor = gameBodyList.iterator(); actor.hasNext();) {
 				DynamicActor body = actor.next();
@@ -118,12 +124,7 @@ public class GameWorld {
 			}
 		}
 		else {
-			if (player.isMovingLeft()) {
-				player.moveLeft();
-			}
-			if (player.isMovingRight()) {
-				player.moveRight();
-			}
+			player.makeStep();
 		}
 		
 		// update bodies
@@ -173,29 +174,38 @@ public class GameWorld {
 	}
 	
 	public float getArenaPositionX() {
-		return arenaPosition.x+2.0f; // TODO +2.0f powinno byc z automatu a nie z reki wpisane!
+//		return arenaPosition.x+2.0f; // TODO +2.0f powinno byc z automatu a nie z reki wpisane!
+		return arenaPosition.x;
 	}
 	
 	public float getScreenWidth() {
-		return graphics().width()*WildJoe.physUnitPerScreenUnit;
+		return screenWidth;
 	}
 	
 	public float getScreenHeight() {
-		return graphics().height()*WildJoe.physUnitPerScreenUnit;
+		return screenHeight;
 	}
 	
+	/**
+	 * Returns whole world height;
+	 * @return
+	 */
 	public float getWorldHeight() {
 		return getScreenHeight();
 	}
 	
+	/**
+	 * Returns whole world width
+	 * @return
+	 */
 	public float getWorldWidth() {
 		if (worldWidth==0.0f) {
 			for (Iterator<DynamicActor> iterator = gameBodyList.iterator(); iterator.hasNext();) {
 				DynamicActor body = (DynamicActor)iterator.next();
-				if (worldWidth < body.model().position().x)
-					worldWidth = body.model().position().x;
+				if (worldWidth < body.model().width()) {
+					worldWidth = body.model().width();
+				}
 			}
-			worldWidth++; //zwiekszam szerokosc o 1, tzn o szerokosc jednego klocka
 		}
 		return worldWidth;
 	}

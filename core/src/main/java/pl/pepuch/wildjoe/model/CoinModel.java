@@ -15,18 +15,24 @@ public class CoinModel extends DynamicModel {
 	CircleShape shape;
 	
 	public CoinModel(GameWorld world, Vec2 position) {
-		super(world, position);
-		position.set(new Vec2(position.x+0.5f, position.y+0.5f));
+		super(world);
+		setSpeed(0.1f);
+		setWidth(1f);
+		setHeight(1f);
+		body = createBody(world);
+		setPosition(position);
+		origin = body.getPosition().clone();
 	}
 	
 	@Override
 	protected Body createBody(GameWorld world) {
-		bodyDef = new BodyDef();
+		BodyDef bodyDef = new BodyDef();
 	    bodyDef.type = BodyType.KINEMATIC;
+
 	    shape = new CircleShape();
 	    shape.m_radius = 0.2f;
-
-	    fixtureDef = new FixtureDef();
+	    
+	    FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.friction = 0.0f;
 		fixtureDef.restitution = 0.0f;
@@ -34,7 +40,6 @@ public class CoinModel extends DynamicModel {
 		
 		body = world.world().createBody(bodyDef);
 		body.createFixture(fixtureDef);
-		body.setUserData(this);
 		
 		return body;
 	}
@@ -53,5 +58,5 @@ public class CoinModel extends DynamicModel {
 	public float radius() {
 		return shape.m_radius;
 	}
-	
+
 }

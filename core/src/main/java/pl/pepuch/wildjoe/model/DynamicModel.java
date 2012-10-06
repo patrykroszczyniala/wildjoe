@@ -2,15 +2,12 @@ package pl.pepuch.wildjoe.model;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.FixtureDef;
 
 import pl.pepuch.wildjoe.core.world.GameWorld;
+import playn.core.PlayN;
 
 public abstract class DynamicModel {
 	
-	protected BodyDef bodyDef;
-	protected FixtureDef fixtureDef;
 	protected Body body;
 	protected float height;
 	protected float width;
@@ -18,13 +15,12 @@ public abstract class DynamicModel {
 	protected Vec2 origin;
 	protected float speed;
 	protected Vec2 positionBefore;
+	protected Vec2 position;
+	private boolean isTurnedLeft;
+	private boolean isTurnedRight;
 	
-	public DynamicModel(GameWorld world, Vec2 position) {
-		setSpeed(0.1f);
+	public DynamicModel(GameWorld world) {
 		this.world = world;
-		body = createBody(world);
-		setPosition(position);
-		origin = body.getPosition().clone();
 	}
 	
 	public GameWorld gameWorld() {
@@ -50,11 +46,19 @@ public abstract class DynamicModel {
 	}
 	
 	public void destroy() {
-		world.world().destroyBody(body);
-		bodyDef = null;
-		fixtureDef = null;
-		body = null;
-		origin = null;
+		PlayN.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				world.world().destroyBody(body);
+				origin = null;
+			}
+		});
+	}
+	
+	public Vec2 gameWorldPositionBefore() {
+		float x = positionBefore().x+world.getArenaPositionX();
+		float y = positionBefore().y;
+		return new Vec2(x, y);
 	}
 	
 	public Vec2 gameWorldPosition() {
@@ -98,6 +102,24 @@ public abstract class DynamicModel {
 	
 	public void setSpeed(float speed) {
 		this.speed = speed;
+	}
+	
+	public boolean isTurnedLeft() {
+		return isTurnedLeft;
+	}
+	
+	public void turnLeft() {
+		this.isTurnedRight = false;
+		this.isTurnedLeft = true;
+	}
+	
+	public boolean isTurnedRight() {
+		return isTurnedRight;
+	}
+	
+	public void turnRight() {
+		this.isTurnedLeft = false;
+		this.isTurnedRight = true;
 	}
 	
 	protected abstract Body createBody(GameWorld world);

@@ -20,6 +20,14 @@
     <gae.version>1.6.1</gae.version>
   </properties>
 
+  
+  <repositories>
+    <repository>
+      <id>objectify-appengine</id>
+      <url>http://maven.objectify-appengine.googlecode.com/git/</url>
+    </repository>
+  </repositories>
+  
   <dependencies>
       
     <dependency>
@@ -61,6 +69,20 @@
       <version>${gae.version}</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>com.googlecode.objectify</groupId>
+      <artifactId>objectify</artifactId>
+      <version>3.0</version>
+    </dependency>
+    
+    <dependency>
+		<groupId>javax.persistence</groupId>
+		<artifactId>persistence-api</artifactId>
+		<version>1.0-rev-1</version>
+	</dependency>
+	            
+    
     <!-- End Google App Engine dependencies -->
   </dependencies>
 

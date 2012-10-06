@@ -10,10 +10,9 @@ import pl.pepuch.wildjoe.view.CoinView;
 public class Coin extends DynamicActor {
 	
 	public Coin(GameWorld world, Vec2 position) {
-		super();
 		model = new CoinModel(world, position);
 		view = new CoinView(model());
-		model().setPosition(position);
+		model().setPosition(new Vec2(position.x+0.5f, position.y+0.5f));
 		model().body().setUserData(this);
 	}
 

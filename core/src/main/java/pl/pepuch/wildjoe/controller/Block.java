@@ -8,8 +8,8 @@ import pl.pepuch.wildjoe.view.BlockView;
 
 public class Block extends DynamicActor {
 	
-	public Block(GameWorld world, Vec2 position) {
-		model = new BlockModel(world, position);
+	public Block(GameWorld world, Vec2 position, float width, float height) {
+		model = new BlockModel(world, position, width, height);
 		view = new BlockView(model());
 		model().setPosition(position);
 		model().body().setUserData(this);

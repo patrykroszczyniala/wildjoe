@@ -2,6 +2,7 @@
   <inherits name='playn.PlayN'/>
   <inherits name="org.jbox2d.GwtBox2D" />
   <inherits name="tripleplay.TriplePlay"/>
+  <inherits name="com.googlecode.objectify.Objectify" />
 
   <source path='controller'/>
   <source path='model'/>

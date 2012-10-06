@@ -11,50 +11,45 @@ public abstract class DynamicActor {
 	
 	protected DynamicView view;
 	protected DynamicModel model;
-	private boolean isMovingLeft;
-	private boolean isMovingRight;
+	private boolean isMoving;
 	private boolean isVisible;
 	
-	public void moveLeft() {
-		float x = model().position().x-model().speed();
-		float y = model().position().y;
-		model().setPosition(new Vec2(x, y));
+	public void stop() {
+		isMoving = false;
 	}
 	
-	public void moveRight() {
-		float x = model().position().x+model().speed();
-		float y = model().position().y;
-		model().setPosition(new Vec2(x, y));
+	public void go() {
+		isMoving = true;
+	}
+	
+	public boolean isMoving() {
+		return isMoving;
+	}
+	
+	public void makeStep() {
+		if (isMoving) {
+			float x = model().position().x-model().speed();
+			if (model.isTurnedRight()) {
+				x = model().position().x+model().speed();
+			}
+			float y = model().position().y;
+			model().setPosition(new Vec2(x, y));
+		}
 	}
 	
 	public void jump() {
 		if (!isJumping()) {
 			float impulse = model().body().getMass() * 80;
-			System.out.println(new Vec2(model().body().getPosition().x, impulse)+" / "+model().body().getWorldCenter());
 			model().body().applyLinearImpulse(new Vec2(model().body().getPosition().x, impulse), model().body().getWorldCenter());
 		}
 	}
 	
-	public boolean isMovingLeft() {
-		return isMovingLeft;
+	public void turnLeft() {
+		model().turnLeft();
 	}
 	
-	public void isMovingLeft(boolean isMovingLeft) {
-		this.isMovingLeft = isMovingLeft;
-		if (isMovingLeft) {
-			this.isMovingRight = !isMovingLeft;
-		}
-	}
-	
-	public boolean isMovingRight() {
-		return isMovingRight;
-	}
-	
-	public void isMovingRight(boolean isMovingRight) {
-		this.isMovingRight = isMovingRight;
-		if (isMovingRight) {
-			this.isMovingLeft = !isMovingRight;
-		}
+	public void turnRight() {
+		model().turnRight();
 	}
 	
 	public boolean isJumping() {

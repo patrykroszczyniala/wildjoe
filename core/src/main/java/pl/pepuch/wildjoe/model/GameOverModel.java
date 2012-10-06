@@ -10,7 +10,7 @@ public class GameOverModel extends StaticModel {
 	
 	public GameOverModel(Scoreboard scoreboard) {
 		this.scoreboard = scoreboard;
-		this.bonus = (Math.factorial(scoreboard.lives()) * 100) + (scoreboard.level()*10);
+		this.bonus = (int) ((Math.factorial(scoreboard.lives()) * 100) + (scoreboard.level()*10));
 	}
 	
 	public Scoreboard scoreboard() {
