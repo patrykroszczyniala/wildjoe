@@ -19,11 +19,11 @@ public class PlayerView extends DynamicView {
 		Image imageJump = AssetsFactory.getImage("images/idle.png");
 //		Image imageJump = AssetsFactory.getImage("images/jump.png");
 
-		int width = 40;
+		int width = 64;
 		int height = 64;
 		int size = 64;
 		animationIdle = new Animation(imageIdle, size, size, 1, 66);
-		animationRun = new Animation(imageRun, width, height, 13, 66);
+		animationRun = new Animation(imageRun, width, height, 10, 66);
 		animationJump = new Animation(imageJump, size, size, 1, 66);
 		
 		animationIdle.setVisible(false);

@@ -16,7 +16,7 @@ public class Mummy extends DynamicActor {
 		model = new MummyModel(world, position);
 		view = new MummyView(model());
 		go();
-		turnRight();
+		turnLeft();
 		model().body().setUserData(this);
 		weapon = new SpiderWeapon(model().gameWorld(), model().position());
 		weapon.model().setFrequency(1/5f); // one cartridge per one second (1/1 = 1 ;))

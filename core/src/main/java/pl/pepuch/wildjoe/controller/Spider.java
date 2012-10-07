@@ -60,5 +60,17 @@ public class Spider extends DynamicActor {
 	public SpiderView view() {
 		return (SpiderView)view;
 	}
+	
+	@Override
+	public void turnLeft() {
+		view().turnLeft();
+		super.turnLeft();
+	}
+	
+	@Override
+	public void turnRight() {
+		view().turnRight();
+		super.turnRight();
+	}
 		
 }

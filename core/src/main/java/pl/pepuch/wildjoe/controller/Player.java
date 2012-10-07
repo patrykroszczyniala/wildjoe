@@ -15,7 +15,7 @@ public class Player extends DynamicActor {
 		model = new PlayerModel(world, position);
 		view = new PlayerView(model());
 		model().body().setUserData(this);
-		turnRight();
+		turnLeft();
 	}
 	
 	public void paint(float alpha) {

@@ -1,25 +1,8 @@
 {
   "Entities": [
-    {"type": "Player", "x":10.0, "y":0.0, "a":0.0},
+    {"type": "Player", "x":1.0, "y":0.0, "a":0.0},
 
-	{"type": "FinishFlag", "x":39.0, "y":1.0, "a":0.0}, 
-	
-	{"type": "Block", "x":-1.0, "y":0.0, "width":42.0, "height":1.0, "a":0.0},
-	{"type": "Block", "x":5.0, "y":3.0, "width":5.0, "height":1.0, "a":0.0},
-	{"type": "Block", "x":18.0, "y":3.0, "width":5.0, "height":1.0, "a":0.0},
-	{"type": "Block", "x":20.0, "y":6.0, "width":8.0, "height":1.0, "a":0.0},
-	
-	{"type": "Mummy", "x":22.0, "y":8.0, "a":0.0},
-
-	{"type": "Coin", "x":26.0, "y":7.0, "a":0.0},
-	{"type": "Coin", "x":27.0, "y":7.0, "a":0.0},
-	{"type": "Coin", "x":26.0, "y":8.0, "a":0.0},
-	{"type": "Coin", "x":27.0, "y":8.0, "a":0.0},
-	{"type": "Diamond", "x":35.0, "y":1.0, "a":0.0},
-	{"type": "Diamond", "x":36.0, "y":1.0, "a":0.0},
-	{"type": "Diamond", "x":35.0, "y":2.0, "a":0.0},
-	{"type": "Diamond", "x":36.0, "y":2.0, "a":0.0}
-	
+{"type":"Mummy","x":15.0,"y":11.0,"a":0.0},{"type":"Mummy","x":26.0,"y":11.0,"a":0.0},{"type":"Diamond","x":34.0,"y":11.0,"a":0.0},{"type":"Mummy","x":37.0,"y":11.0,"a":0.0},{"type":"Diamond","x":34.0,"y":10.0,"a":0.0},{"type":"Block","x":14.0,"y":9.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":24.0,"y":9.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":34.0,"y":9.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Mummy","x":10.0,"y":8.0,"a":0.0},{"type":"Mummy","x":21.0,"y":8.0,"a":0.0},{"type":"Diamond","x":23.0,"y":8.0,"a":0.0},{"type":"Mummy","x":30.0,"y":8.0,"a":0.0},{"type":"Coin","x":33.0,"y":8.0,"a":0.0},{"type":"Mummy","x":41.0,"y":8.0,"a":0.0},{"type":"Diamond","x":23.0,"y":7.0,"a":0.0},{"type":"Coin","x":33.0,"y":7.0,"a":0.0},{"type":"Block","x":9.0,"y":6.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":19.0,"y":6.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":29.0,"y":6.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":39.0,"y":6.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":9.0,"y":5.0,"width":1.0,"height":1.0,"a":0.0},{"type":"Mummy","x":16.0,"y":5.0,"a":0.0},{"type":"Mummy","x":25.0,"y":5.0,"a":0.0},{"type":"Mummy","x":46.0,"y":5.0,"a":0.0},{"type":"Block","x":9.0,"y":4.0,"width":1.0,"height":1.0,"a":0.0},{"type":"Block","x":4.0,"y":3.0,"width":6.0,"height":1.0,"a":0.0},{"type":"Block","x":14.0,"y":3.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":23.0,"y":3.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":33.0,"y":3.0,"width":2.0,"height":1.0,"a":0.0},{"type":"Block","x":37.0,"y":3.0,"width":2.0,"height":1.0,"a":0.0},{"type":"Block","x":38.0,"y":3.0,"a":0.0},{"type":"Block","x":44.0,"y":3.0,"width":5.0,"height":1.0,"a":0.0},{"type":"Block","x":4.0,"y":2.0,"width":1.0,"height":1.0,"a":0.0},{"type":"Coin","x":5.0,"y":2.0,"a":0.0},{"type":"Coin","x":6.0,"y":2.0,"a":0.0},{"type":"Coin","x":7.0,"y":2.0,"a":0.0},{"type":"Coin","x":8.0,"y":2.0,"a":0.0},{"type":"Coin","x":9.0,"y":2.0,"a":0.0},{"type":"Coin","x":14.0,"y":2.0,"a":0.0},{"type":"Coin","x":15.0,"y":2.0,"a":0.0},{"type":"Coin","x":16.0,"y":2.0,"a":0.0},{"type":"Coin","x":17.0,"y":2.0,"a":0.0},{"type":"Coin","x":18.0,"y":2.0,"a":0.0},{"type":"Coin","x":23.0,"y":2.0,"a":0.0},{"type":"Coin","x":24.0,"y":2.0,"a":0.0},{"type":"Coin","x":25.0,"y":2.0,"a":0.0},{"type":"Coin","x":26.0,"y":2.0,"a":0.0},{"type":"Coin","x":27.0,"y":2.0,"a":0.0},{"type":"Block","x":32.0,"y":2.0,"width":1.0,"height":1.0,"a":0.0},{"type":"Diamond","x":33.0,"y":2.0,"a":0.0},{"type":"Mummy","x":35.0,"y":2.0,"a":0.0},{"type":"Diamond","x":38.0,"y":2.0,"a":0.0},{"type":"Block","x":39.0,"y":2.0,"width":1.0,"height":1.0,"a":0.0},{"type":"Block","x":4.0,"y":1.0,"width":1.0,"height":1.0,"a":0.0},{"type":"Coin","x":5.0,"y":1.0,"a":0.0},{"type":"Coin","x":6.0,"y":1.0,"a":0.0},{"type":"Coin","x":7.0,"y":1.0,"a":0.0},{"type":"Coin","x":8.0,"y":1.0,"a":0.0},{"type":"Coin","x":9.0,"y":1.0,"a":0.0},{"type":"Block","x":31.0,"y":1.0,"width":2.0,"height":1.0,"a":0.0},{"type":"Diamond","x":33.0,"y":1.0,"a":0.0},{"type":"Diamond","x":38.0,"y":1.0,"a":0.0},{"type":"Block","x":39.0,"y":1.0,"width":2.0,"height":1.0,"a":0.0},{"type":"Block","x":40.0,"y":1.0,"a":0.0},{"type":"FinishFlag","x":51.0,"y":1.0,"a":0.0},{"type":"Block","x":0.0,"y":0.0,"width":50.0,"height":1.0,"a":0.0}
 
   ]
 }

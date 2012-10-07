@@ -8,7 +8,6 @@ public class MummyView extends DynamicView {
 	
 	// public tylko tymczasowo, do testow
 	public Animation animationRun;
-	public Animation animationJump;
 	
 	public MummyView(MummyModel model) {
 		super(model);
