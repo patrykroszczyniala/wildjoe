@@ -6,11 +6,10 @@ import pl.pepuch.wildjoe.model.FinishFlagModel;
 import playn.core.Image;
 
 public class FinishFlagView extends DynamicView {
-	
-	public FinishFlagView(FinishFlagModel finishFlag) {
-		super(finishFlag);
-		Image image = AssetsFactory.getImage("images/finishFlag.png");
-		addLayer(graphics().createImageLayer(image));
-	}
-	
+
+    public FinishFlagView(FinishFlagModel finishFlag) {
+        super(finishFlag);
+        Image image = AssetsFactory.getImage("images/finishFlag.png");
+        addLayer(graphics().createImageLayer(image));
+    }
 }

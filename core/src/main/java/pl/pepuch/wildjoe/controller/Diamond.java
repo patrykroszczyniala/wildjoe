@@ -6,32 +6,30 @@ import pl.pepuch.wildjoe.core.world.GameWorld;
 import pl.pepuch.wildjoe.model.DiamondModel;
 import pl.pepuch.wildjoe.view.DiamondView;
 
-
 public class Diamond extends DynamicActor {
-	
-	public Diamond(GameWorld world, Vec2 position) {
-		model = new DiamondModel(world, position);
-		view = new DiamondView(model());
-		model().setPosition(new Vec2(position.x+0.5f, position.y+0.5f));
-		model().body().setUserData(this);
-	}
 
-	public void paint(float alpha) {
-		view().paint(alpha);
-	}
-	
-	public void update(float delta) {
-		view().update(delta);
-	}
+    public Diamond(GameWorld world, Vec2 position) {
+        model = new DiamondModel(world, position);
+        view = new DiamondView(model());
+        model().setPosition(new Vec2(position.x + 0.5f, position.y + 0.5f));
+        model().body().setUserData(this);
+    }
 
-	@Override
-	public DiamondModel model() {
-		return (DiamondModel)model;
-	}
+    public void paint(float alpha) {
+        view().paint(alpha);
+    }
 
-	@Override
-	public DiamondView view() {
-		return (DiamondView)view;
-	}
-		
+    public void update(float delta) {
+        view().update(delta);
+    }
+
+    @Override
+    public DiamondModel model() {
+        return (DiamondModel) model;
+    }
+
+    @Override
+    public DiamondView view() {
+        return (DiamondView) view;
+    }
 }

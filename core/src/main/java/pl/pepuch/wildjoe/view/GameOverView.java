@@ -16,69 +16,67 @@ import tripleplay.ui.Style;
 import tripleplay.ui.layout.AxisLayout;
 
 public class GameOverView extends StaticView {
-	
-	private Button btnContinue;
-	private Label bonusLabel;
-	private Field nameField;
-	
-	public GameOverView(final GameOverModel model) {
-		super();
-		
-		btnContinue = new Button();
-		bonusLabel = new Label();
-		nameField = new Field("Enter your name");
-		final Image bgImage = AssetsFactory.getImage("images/bg.png");
-		final Image gameOverImage = AssetsFactory.getImage("images/gameOver.png");
-		final Image btnContinueImage = AssetsFactory.getImage("images/btnContinue.png");
-		final Image bonusIconImage = AssetsFactory.getImage("images/bonusIcon.png");
-		
-		AssetWatcher assetWatcher = new AssetWatcher(new AssetWatcher.Listener() {
-			
-			@Override
-			public void error(Throwable e) {
-				e.printStackTrace();
-			}
-			
-			@Override
-			public void done() {
-				float xPos = 0.0f;
-				float yPos = 0.0f;
-				// bg
-				addLayerAt(bgImage, xPos, yPos).setDepth(-4);
-				// layout
-				Root root = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet());
-		        root.addStyles(Style.VALIGN.center);
-		        root.setSize(PlayN.graphics().width(), PlayN.graphics().height());
-		        Label labelGameOver = new Label(gameOverImage);
-		        bonusLabel.icon.update(bonusIconImage);
-		        btnContinue.icon.update(btnContinueImage);
-				root.add(new Group(AxisLayout.vertical(), Style.HALIGN.center, Style.BACKGROUND.is(Background.blank())).add(
-						labelGameOver,
-						model.scoreboard().view().points(),
-						bonusLabel,
-						nameField(),
-						btnContinue));
-				btnContinue.setStyles(Style.BACKGROUND.is(Background.blank()));
-				addLayer(root.layer);
-			}
-		});
-		assetWatcher.add(bgImage);
-		assetWatcher.add(gameOverImage);
-		assetWatcher.add(btnContinueImage);
-		assetWatcher.add(bonusIconImage);
-		assetWatcher.start();
-	}
-	
-	public Button btnContinue() {
-		return btnContinue;
-	}
 
-	public Label bonusLabel() {
-		return bonusLabel;
-	}
+    private Button btnContinue;
+    private Label bonusLabel;
+    private Field nameField;
 
-	public Field nameField() {
-		return nameField;
-	}
+    public GameOverView(final GameOverModel model) {
+        super();
 
+        btnContinue = new Button();
+        bonusLabel = new Label();
+        nameField = new Field("Enter your name");
+        final Image bgImage = AssetsFactory.getImage("images/bg.png");
+        final Image gameOverImage = AssetsFactory.getImage("images/gameOver.png");
+        final Image btnContinueImage = AssetsFactory.getImage("images/btnContinue.png");
+        final Image bonusIconImage = AssetsFactory.getImage("images/bonusIcon.png");
+
+        AssetWatcher assetWatcher = new AssetWatcher(new AssetWatcher.Listener() {
+            @Override
+            public void error(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void done() {
+                float xPos = 0.0f;
+                float yPos = 0.0f;
+                // bg
+                addLayerAt(bgImage, xPos, yPos).setDepth(-4);
+                // layout
+                Root root = iface.createRoot(AxisLayout.vertical(), SimpleStyles.newSheet());
+                root.addStyles(Style.VALIGN.center);
+                root.setSize(PlayN.graphics().width(), PlayN.graphics().height());
+                Label labelGameOver = new Label(gameOverImage);
+                bonusLabel.icon.update(bonusIconImage);
+                btnContinue.icon.update(btnContinueImage);
+                root.add(new Group(AxisLayout.vertical(), Style.HALIGN.center, Style.BACKGROUND.is(Background.blank())).add(
+                        labelGameOver,
+                        model.scoreboard().view().points(),
+                        bonusLabel,
+                        nameField(),
+                        btnContinue));
+                btnContinue.setStyles(Style.BACKGROUND.is(Background.blank()));
+                addLayer(root.layer);
+            }
+        });
+        assetWatcher.add(bgImage);
+        assetWatcher.add(gameOverImage);
+        assetWatcher.add(btnContinueImage);
+        assetWatcher.add(bonusIconImage);
+        assetWatcher.start();
+    }
+
+    public Button btnContinue() {
+        return btnContinue;
+    }
+
+    public Label bonusLabel() {
+        return bonusLabel;
+    }
+
+    public Field nameField() {
+        return nameField;
+    }
 }

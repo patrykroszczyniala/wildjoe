@@ -6,32 +6,30 @@ import pl.pepuch.wildjoe.core.world.GameWorld;
 import pl.pepuch.wildjoe.model.CoinModel;
 import pl.pepuch.wildjoe.view.CoinView;
 
-
 public class Coin extends DynamicActor {
-	
-	public Coin(GameWorld world, Vec2 position) {
-		model = new CoinModel(world, position);
-		view = new CoinView(model());
-		model().setPosition(new Vec2(position.x+0.5f, position.y+0.5f));
-		model().body().setUserData(this);
-	}
 
-	public void paint(float alpha) {
-		view().paint(alpha);
-	}
-	
-	public void update(float delta) {
-		view().update(delta);
-	}
+    public Coin(GameWorld world, Vec2 position) {
+        model = new CoinModel(world, position);
+        view = new CoinView(model());
+        model().setPosition(new Vec2(position.x + 0.5f, position.y + 0.5f));
+        model().body().setUserData(this);
+    }
 
-	@Override
-	public CoinModel model() {
-		return (CoinModel)model;
-	}
+    public void paint(float alpha) {
+        view().paint(alpha);
+    }
 
-	@Override
-	public CoinView view() {
-		return (CoinView)view;
-	}
-		
+    public void update(float delta) {
+        view().update(delta);
+    }
+
+    @Override
+    public CoinModel model() {
+        return (CoinModel) model;
+    }
+
+    @Override
+    public CoinView view() {
+        return (CoinView) view;
+    }
 }
